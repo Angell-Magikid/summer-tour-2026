@@ -1,0 +1,1283 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>2026 AI Robotics Summer Tour | MagiKid</title>
+  <style>
+    /* ===== CSS Reset & Variables ===== */
+    *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+
+    :root {
+      --primary: #1a1a2e;
+      --primary-light: #2d2d4a;
+      --accent: #2563eb;
+      --accent-light: #3b82f6;
+      --accent2: #7c3aed;
+      --accent3: #f97316;
+      --gold: #eab308;
+      --bg-main: #f8fafc;
+      --bg-card: #ffffff;
+      --bg-section-alt: #f1f5f9;
+      --text-primary: #1e293b;
+      --text-secondary: #475569;
+      --text-muted: #94a3b8;
+      --card-border: #e2e8f0;
+      --shadow-sm: 0 1px 3px rgba(0,0,0,0.08);
+      --shadow-md: 0 4px 20px rgba(0,0,0,0.08);
+      --shadow-lg: 0 10px 40px rgba(0,0,0,0.12);
+      --radius: 16px;
+      --radius-lg: 24px;
+    }
+
+    html { scroll-behavior: smooth; }
+
+    body {
+      background: var(--bg-main);
+      color: var(--text-primary);
+      font-family: 'Inter', -apple-system, BlinkMacSystemFont, 'PingFang SC', 'Segoe UI', sans-serif;
+      line-height: 1.65;
+      overflow-x: hidden;
+    }
+
+    /* Animated Background - Light & Clean */
+    .bg-animation {
+      position: fixed; top: 0; left: 0; width: 100%; height: 100%; z-index: -1; overflow: hidden;
+      background: linear-gradient(135deg, #f0f4ff 0%, #faf5ff 30%, #fff7ed 60%, #f0fdf4 100%);
+    }
+    .bg-animation::before {
+      content: '';
+      position: absolute; width: 120%; height: 120%;
+      top: -10%; left: -10%;
+      background:
+        radial-gradient(ellipse at 20% 20%, rgba(37,99,235,0.08) 0%, transparent 50%),
+        radial-gradient(ellipse at 80% 30%, rgba(124,58,237,0.06) 0%, transparent 50%),
+        radial-gradient(ellipse at 50% 80%, rgba(249,115,22,0.05) 0%, transparent 50%),
+        radial-gradient(ellipse at 70% 70%, rgba(34,197,94,0.04) 0%, transparent 40%);
+      animation: bgShift 25s ease-in-out infinite alternate;
+    }
+    @keyframes bgShift {
+      0% { transform: translate(0,0) rotate(0deg); }
+      100% { transform: translate(-3%,-3%) rotate(3deg); }
+    }
+
+    /* Floating shapes for visual interest */
+    .floating-shapes {
+      position: fixed; top: 0; left: 0; width: 100%; height: 100%; z-index: -1; pointer-events: none; overflow: hidden;
+    }
+    .shape {
+      position: absolute; border-radius: 50%;
+      opacity: 0.06;
+      animation: floatShape 20s ease-in-out infinite alternate;
+    }
+    @keyframes floatShape {
+      0% { transform: translateY(0) scale(1); }
+      100% { transform: translateY(-30px) scale(1.05); }
+    }
+
+    nav {
+      position: fixed; top: 0; left: 0; right: 0; z-index: 100;
+      padding: 14px 40px; display: flex; align-items: center; justify-content: space-between;
+      background: rgba(255,255,255,0.85); backdrop-filter: blur(20px);
+      border-bottom: 1px solid rgba(226,232,240,0.8);
+      box-shadow: var(--shadow-sm);
+    }
+    .nav-logo { display: flex; align-items: center; gap: 10px; font-size: 1.2rem; font-weight: 700; color: var(--accent); text-decoration: none; }
+    .nav-logo .logo-icon { width: 38px; height: 38px; background: linear-gradient(135deg, var(--accent), var(--accent2)); border-radius: 10px; display: flex; align-items: center; justify-content: center; font-size: 1.2rem; }
+    .nav-links { display: flex; gap: 28px; list-style: none; align-items: center; }
+    .nav-links a { color: var(--text-secondary); text-decoration: none; font-size: 0.9rem; font-weight: 500; transition: color 0.3s; }
+    .nav-links a:hover { color: var(--accent); }
+
+    .lang-toggle { display: flex; background: var(--bg-section-alt); border-radius: 24px; padding: 3px; gap: 2px; }
+    .lang-btn { padding: 5px 16px; border-radius: 20px; border: none; cursor: pointer; font-size: 0.85rem; font-weight: 600; background: transparent; color: var(--text-muted); transition: all 0.3s; }
+    .lang-btn.active { background: linear-gradient(135deg, var(--accent), var(--accent2)); color: white; box-shadow: 0 2px 10px rgba(37,99,235,0.3); }
+
+    /* Hero - Light & Vibrant */
+    .hero {
+      min-height: 100vh; display: flex; flex-direction: column; align-items: center; justify-content: center;
+      text-align: center; padding: 120px 40px 80px; position: relative;
+    }
+    .hero-badge {
+      display: inline-flex; align-items: center; gap: 8px;
+      background: linear-gradient(135deg, rgba(37,99,235,0.1), rgba(124,58,237,0.1));
+      border: 1px solid rgba(37,99,235,0.2);
+      border-radius: 50px; padding: 8px 22px; font-size: 0.88rem; font-weight: 600;
+      color: var(--accent); margin-bottom: 26px; animation: fadeInDown 0.8s ease;
+    }
+    .hero-badge::before { content: '⚡'; }
+    .hero-date-badge {
+      display: inline-flex; align-items: center; gap: 8px;
+      background: linear-gradient(135deg, rgba(249,115,22,0.1), rgba(234,179,8,0.1));
+      border: 1px solid rgba(249,115,22,0.2); border-radius: 50px;
+      padding: 8px 22px; font-size: 0.88rem; font-weight: 600;
+      color: var(--accent3); margin-bottom: 18px; margin-left: 10px;
+      animation: fadeInDown 0.8s ease 0.1s both;
+    }
+    .hero-title { font-size: clamp(2.4rem, 6.5vw, 4.8rem); font-weight: 800; line-height: 1.1; margin-bottom: 10px; animation: fadeInUp 0.8s ease 0.2s both; color: var(--text-primary); }
+    .hero-title .gradient-text {
+      background: linear-gradient(135deg, var(--accent), var(--accent2), var(--accent3));
+      -webkit-background-clip: text; -webkit-text-fill-color: transparent; background-clip: text;
+    }
+    .hero-subtitle { font-size: clamp(1.15rem, 2.8vw, 1.7rem); color: var(--text-secondary); margin-bottom: 18px; font-weight: 400; animation: fadeInUp 0.8s ease 0.3s both; }
+    .hero-desc { max-width: 650px; font-size: 1.02rem; color: var(--text-secondary); margin-bottom: 36px; animation: fadeInUp 0.8s ease 0.4s both; line-height: 1.75; }
+    .hero-cta { display: flex; gap: 14px; flex-wrap: wrap; justify-content: center; animation: fadeInUp 0.8s ease 0.5s both; }
+    .btn-primary {
+      padding: 15px 38px; background: linear-gradient(135deg, var(--accent), var(--accent2));
+      color: white; border: none; border-radius: 50px; font-size: 1rem; font-weight: 700;
+      cursor: pointer; text-decoration: none; transition: transform 0.2s, box-shadow 0.2s;
+      box-shadow: 0 4px 20px rgba(37,99,235,0.35); display: inline-block;
+    }
+    .btn-primary:hover { transform: translateY(-3px); box-shadow: 0 8px 32px rgba(37,99,235,0.45); }
+    .btn-secondary {
+      padding: 15px 38px; background: white; color: var(--text-primary);
+      border: 2px solid var(--card-border); border-radius: 50px; font-size: 1rem; font-weight: 600;
+      cursor: pointer; text-decoration: none; transition: all 0.2s; display: inline-box;
+    }
+    .btn-secondary:hover { border-color: var(--accent); color: var(--accent); box-shadow: var(--shadow-md); }
+
+    .hero-stats { display: flex; gap: 48px; margin-top: 60px; flex-wrap: wrap; justify-content: center; animation: fadeInUp 0.8s ease 0.6s both; }
+    .stat-item { text-align: center; background: white; border-radius: 16px; padding: 20px 28px; box-shadow: var(--shadow-md); border: 1px solid var(--card-border); }
+    .stat-num {
+      font-size: 2.4rem; font-weight: 900;
+      background: linear-gradient(135deg, var(--accent), var(--gold));
+      -webkit-background-clip: text; -webkit-text-fill-color: transparent; background-clip: text; display: block;
+    }
+    .stat-label { font-size: 0.84rem; color: var(--text-muted); font-weight: 500; margin-top: 4px; }
+
+    .scroll-indicator {
+      position: absolute; bottom: 30px; left: 50%; transform: translateX(-50%);
+      display: flex; flex-direction: column; align-items: center; gap: 8px;
+      color: var(--text-muted); font-size: 0.8rem; animation: bounce 2s infinite;
+    }
+    .scroll-arrow { width: 20px; height: 20px; border-right: 2.5px solid var(--accent); border-bottom: 2.5px solid var(--accent); transform: rotate(45deg); border-radius: 2px; }
+    @keyframes bounce { 0%, 100% { transform: translateX(-50%) translateY(0); } 50% { transform: translateX(-50%) translateY(8px); } }
+
+    section { padding: 90px 40px; }
+    .section-header { text-align: center; margin-bottom: 60px; }
+    .section-tag {
+      display: inline-block; background: linear-gradient(135deg, rgba(37,99,235,0.08), rgba(124,58,237,0.08));
+      border: 1px solid rgba(37,99,235,0.15);
+      border-radius: 50px; padding: 5px 18px; font-size: 0.82rem; font-weight: 600;
+      color: var(--accent); margin-bottom: 16px; text-transform: uppercase; letter-spacing: 1px;
+    }
+    .section-title { font-size: clamp(1.7rem, 4vw, 2.6rem); font-weight: 800; margin-bottom: 16px; color: var(--text-primary); }
+    .section-title .accent { color: var(--accent); }
+    .section-desc { font-size: 1.04rem; color: var(--text-secondary); max-width: 650px; margin: 0 auto; line-height: 1.75; }
+    .divider { width: 56px; height: 4px; background: linear-gradient(90deg, var(--accent), var(--accent2), var(--accent3)); border-radius: 4px; margin: 20px auto; }
+
+    /* Highlights Cards - Clean White */
+    #highlights { background: var(--bg-section-alt); }
+    .highlights-grid { display: grid; grid-template-columns: repeat(auto-fit, minmax(280px, 1fr)); gap: 22px; max-width: 1200px; margin: 0 auto; }
+    .highlight-card {
+      background: var(--bg-card); border: 1px solid var(--card-border); border-radius: var(--radius-lg);
+      padding: 32px 28px; transition: transform 0.3s, box-shadow 0.3s, border-color 0.3s; position: relative; overflow: hidden;
+      box-shadow: var(--shadow-sm);
+    }
+    .highlight-card::before {
+      content: ''; position: absolute; top: 0; left: 0; right: 0; height: 3px;
+      background: linear-gradient(90deg, var(--accent), var(--accent2)); opacity: 0; transition: opacity 0.3s;
+      border-radius: var(--radius-lg) var(--radius-lg) 0 0;
+    }
+    .highlight-card:hover { transform: translateY(-6px); box-shadow: var(--shadow-lg); border-color: rgba(37,99,235,0.2); }
+    .highlight-card:hover::before { opacity: 1; }
+    .highlight-icon { font-size: 2.6rem; margin-bottom: 16px; display: block; }
+    .highlight-card h3 { font-size: 1.13rem; font-weight: 700; margin-bottom: 10px; color: var(--text-primary); }
+    .highlight-card p { font-size: 0.91rem; color: var(--text-secondary); line-height: 1.7; }
+
+    /* Timeline / Itinerary - Light Style */
+    #itinerary { max-width: 1100px; margin: 0 auto; padding-left: 40px; padding-right: 40px; }
+    .timeline { position: relative; max-width: 900px; margin: 0 auto; }
+    .timeline::before {
+      content: ''; position: absolute; left: 50px; top: 0; bottom: 0;
+      width: 3px; background: linear-gradient(to bottom, var(--accent), var(--accent2), var(--accent3), var(--gold));
+      border-radius: 3px;
+    }
+    .timeline-item { display: flex; gap: 28px; margin-bottom: 36px; position: relative; animation: fadeInLeft 0.6s ease both; }
+    .timeline-dot { position: relative; flex-shrink: 0; width: 100px; display: flex; flex-direction: column; align-items: center; gap: 6px; }
+    .dot {
+      width: 22px; height: 22px; background: linear-gradient(135deg, var(--accent), var(--accent2)); border-radius: 50%;
+      border: 3px solid white; box-shadow: 0 0 12px rgba(37,99,235,0.3); flex-shrink: 0;
+      position: relative; z-index: 1; margin-top: 18px;
+    }
+    .day-label { font-size: 0.73rem; font-weight: 700; color: var(--accent); text-align: center; line-height: 1.25; }
+    .timeline-content {
+      flex: 1; background: var(--bg-card); border: 1px solid var(--card-border); border-radius: var(--radius);
+      padding: 26px 28px; transition: border-color 0.3s, box-shadow 0.3s;
+      box-shadow: var(--shadow-sm);
+    }
+    .timeline-content:hover { border-color: rgba(37,99,235,0.3); box-shadow: var(--shadow-md); }
+    .timeline-content h3 { font-size: 1.08rem; font-weight: 700; margin-bottom: 12px; color: var(--text-primary); display: flex; align-items: center; gap: 10px; }
+    .timeline-content h3 .icon { font-size: 1.3rem; }
+    .timeline-content ul { list-style: none; display: flex; flex-direction: column; gap: 7px; }
+    .timeline-content ul li { font-size: 0.9rem; color: var(--text-secondary); padding-left: 18px; position: relative; }
+    .timeline-content ul li::before { content: '→'; position: absolute; left: 0; color: var(--accent); font-size: 0.78rem; font-weight: 700; }
+
+    /* Image Gallery in Each Day */
+    .day-images {
+      display: grid; gap: 12px; margin-top: 20px; border-radius: 16px; overflow: hidden;
+    }
+    .day-photo {
+      width: 100%; border-radius: 14px; object-fit: cover;
+      transition: transform 0.4s cubic-bezier(.17,.67,.27,1.35), box-shadow 0.3s;
+      box-shadow: 0 2px 12px rgba(37,99,235,0.10);
+    }
+    .day-photo:hover { transform: scale(1.03); box-shadow: 0 8px 30px rgba(37,99,235,0.20); }
+    
+    /* Smart layout by image count */
+    .day-images.img-count-1 { grid-template-columns: 1fr; }
+    .day-images.img-count-1 img { aspect-ratio: 16/9; max-height: 360px; width: 100%; border-radius: 16px; }
+    
+    .day-images.img-count-2 { grid-template-columns: 1fr 1fr; }
+    .day-images.img-count-2 img { aspect-ratio: 4/3; height: 220px; }
+    
+    .day-images.img-count-3 { grid-template-columns: repeat(3, 1fr); }
+    .day-images.img-count-3 img { aspect-ratio: 4/3; height: 200px; }
+
+    .location-tag {
+      display: inline-flex; align-items: center; gap: 4px;
+      background: linear-gradient(135deg, rgba(249,115,22,0.08), rgba(234,179,8,0.08));
+      border: 1px solid rgba(249,115,22,0.15); border-radius: 20px;
+      padding: 3px 12px; font-size: 0.76rem; font-weight: 600; color: var(--accent3); margin-bottom: 10px;
+    }
+
+    .timeline-item:nth-child(1) .dot { background: linear-gradient(135deg, #2563eb, #60a5fa); }
+    .timeline-item:nth-child(2) .dot { background: linear-gradient(135deg, #7c3aed, #a78bfa); }
+    .timeline-item:nth-child(3) .dot { background: linear-gradient(135deg, #f97316, #fb923c); }
+    .timeline-item:nth-child(4) .dot { background: linear-gradient(135deg, #10b981, #34d399); }
+    .timeline-item:nth-child(5) .dot { background: linear-gradient(135deg, #eab308, #facc15); }
+    .timeline-item:nth-child(6) .dot { background: linear-gradient(135deg, #ef4444, #f87171); }
+    .timeline-item:nth-child(7) .dot { background: linear-gradient(135deg, #8b5cf6, #c084fc); }
+    .timeline-item:nth-child(8) .dot { background: linear-gradient(135deg, #06b6d4, #67e8f9); }
+    .timeline-item:nth-child(9) .dot { background: linear-gradient(135deg, #ec4899, #fb7185); }
+
+    /* Route Visual */
+    .route-visual { max-width: 900px; margin: 0 auto 50px; background: var(--bg-card); border: 1px solid var(--card-border); border-radius: var(--radius-lg); padding: 36px 40px; text-align: center; box-shadow: var(--shadow-sm); }
+    .route-cities { display: flex; align-items: center; justify-content: center; gap: 0; flex-wrap: wrap; }
+    .city-node { display: flex; flex-direction: column; align-items: center; gap: 6px; }
+    .city-circle {
+      width: 66px; height: 66px; border-radius: 50%; display: flex; align-items: center; justify-content: center;
+      font-size: 1.7rem; border: 2px solid rgba(37,99,235,0.2); background: linear-gradient(135deg, rgba(37,99,235,0.05), rgba(124,58,237,0.05));
+    }
+    .city-name { font-size: 0.82rem; font-weight: 600; color: var(--text-primary); }
+    .city-days { font-size: 0.7rem; color: var(--text-muted); font-weight: 500; }
+    .route-arrow { font-size: 1.4rem; color: var(--accent); opacity: 0.5; align-self: center; margin-top: -18px; }
+
+    /* Registration - Light Card */
+    #register { background: var(--bg-section-alt); }
+    .register-container { max-width: 720px; margin: 0 auto; }
+    .register-form { background: var(--bg-card); border: 1px solid var(--card-border); border-radius: var(--radius-lg); padding: 46px 44px; box-shadow: var(--shadow-md); }
+    .form-grid { display: grid; grid-template-columns: 1fr 1fr; gap: 18px; margin-bottom: 18px; }
+    .form-group { display: flex; flex-direction: column; gap: 7px; }
+    .form-group.full-width { grid-column: 1 / -1; }
+    .form-group label { font-size: 0.83rem; font-weight: 600; color: var(--text-secondary); text-transform: uppercase; letter-spacing: 0.5px; }
+    .form-group label span.required { color: var(--accent3); margin-left: 3px; }
+    .form-control {
+      background: var(--bg-main); border: 1.5px solid var(--card-border); border-radius: 12px;
+      padding: 12px 16px; color: var(--text-primary); font-size: 0.95rem; outline: none;
+      transition: border-color 0.3s, box-shadow 0.3s; width: 100%;
+    }
+    .form-control::placeholder { color: var(--text-muted); }
+    .form-control:focus { border-color: var(--accent); box-shadow: 0 0 0 3px rgba(37,99,235,0.1); }
+    select.form-control { cursor: pointer; }
+    option { background: white; }
+
+    .file-upload-area {
+      background: linear-gradient(135deg, rgba(37,99,235,0.03), rgba(124,58,237,0.03));
+      border: 2px dashed #cbd5e1; border-radius: 14px;
+      padding: 26px; text-align: center; cursor: pointer; transition: all 0.3s; position: relative;
+    }
+    .file-upload-area:hover, .file-upload-area.drag-over { border-color: var(--accent); background: rgba(37,99,235,0.05); }
+    .file-upload-area input[type="file"] { position: absolute; inset: 0; opacity: 0; cursor: pointer; width: 100%; height: 100%; }
+    .upload-icon { font-size: 2rem; margin-bottom: 8px; display: block; }
+    .upload-text { font-size: 0.9rem; color: var(--text-secondary); }
+    .upload-text strong { color: var(--accent); }
+    .upload-hint { font-size: 0.77rem; color: var(--text-muted); margin-top: 4px; }
+    .file-name-display { margin-top: 10px; font-size: 0.84rem; color: var(--accent); font-weight: 600; display: none; }
+
+    .form-submit-btn {
+      width: 100%; padding: 16px; background: linear-gradient(135deg, var(--accent), var(--accent2)); color: white;
+      border: none; border-radius: 50px; font-size: 1.04rem; font-weight: 700; cursor: pointer; margin-top: 10px;
+      transition: transform 0.2s, box-shadow 0.2s; box-shadow: 0 4px 20px rgba(37,99,235,0.3); letter-spacing: 0.5px;
+    }
+    .form-submit-btn:hover { transform: translateY(-2px); box-shadow: 0 8px 32px rgba(37,99,235,0.45); }
+    .form-note { text-align: center; font-size: 0.81rem; color: var(--text-muted); margin-top: 16px; line-height: 1.6; }
+
+    /* Disclaimer */
+    .disclaimer-note {
+      margin-top: 36px; padding: 18px 24px; background: linear-gradient(135deg, rgba(234,179,8,0.06), rgba(249,115,22,0.06));
+      border: 1px solid rgba(234,179,8,0.2); border-radius: 12px;
+      font-size: 0.83rem; color: var(--text-secondary); text-align: center; line-height: 1.65;
+    }
+    .disclaimer-note strong { color: var(--accent3); }
+
+    .success-msg { display: none; text-align: center; padding: 40px; }
+    .success-msg .success-icon { font-size: 4rem; display: block; margin-bottom: 16px; }
+    .success-msg h3 { font-size: 1.5rem; margin-bottom: 10px; color: var(--accent); }
+    .success-msg p { color: var(--text-secondary); }
+
+    /* Destinations */
+    .destinations-grid { display: grid; grid-template-columns: repeat(auto-fit, minmax(200px, 1fr)); gap: 18px; max-width: 900px; margin: 0 auto; }
+    .dest-card {
+      background: var(--bg-card); border: 1px solid var(--card-border); border-radius: var(--radius);
+      padding: 26px 20px; text-align: center; transition: all 0.3s; box-shadow: var(--shadow-sm);
+    }
+    .dest-card:hover { transform: translateY(-4px); border-color: rgba(37,99,235,0.2); box-shadow: var(--shadow-md); }
+    .dest-emoji { font-size: 2.4rem; display: block; margin-bottom: 12px; }
+    .dest-card h4 { font-size: 1rem; margin-bottom: 6px; color: var(--text-primary); }
+    .dest-card p { font-size: 0.81rem; color: var(--text-secondary); }
+
+    /* Companies */
+    .companies-grid { display: grid; grid-template-columns: repeat(auto-fit, minmax(220px, 1fr)); gap: 22px; max-width: 1000px; margin: 0 auto; }
+    .company-card {
+      background: var(--bg-card); border: 1px solid var(--card-border); border-radius: var(--radius-lg);
+      padding: 32px 24px; text-align: center; transition: all 0.3s; position: relative; overflow: hidden;
+      box-shadow: var(--shadow-sm);
+    }
+    .company-card:hover { transform: translateY(-6px); border-color: rgba(37,99,235,0.2); box-shadow: var(--shadow-lg); }
+    .company-logo { font-size: 2.8rem; display: block; margin-bottom: 12px; }
+    .company-card h4 { font-size: 1.04rem; font-weight: 700; margin-bottom: 8px; color: var(--text-primary); }
+    .company-card p { font-size: 0.85rem; color: var(--text-secondary); line-height: 1.6; }
+    .company-tag { display: inline-block; margin-top: 10px; padding: 4px 14px; border-radius: 20px; font-size: 0.74rem; font-weight: 600; }
+    .tag-ai { background: rgba(37,99,235,0.08); color: var(--accent); border: 1px solid rgba(37,99,235,0.15); }
+    .tag-robot { background: rgba(124,58,237,0.08); color: var(--accent2); border: 1px solid rgba(124,58,237,0.15); }
+    .tag-drone { background: rgba(16,185,129,0.08); color: #059669; border: 1px solid rgba(16,185,129,0.15); }
+    .tag-hardware { background: rgba(234,179,8,0.08); color: #ca8a04; border: 1px solid rgba(234,179,8,0.15); }
+    .tag-culture { background: rgba(249,115,22,0.08); color: var(--accent3); border: 1px solid rgba(249,115,22,0.15); }
+
+    footer {
+      background: var(--primary-light); border-top: 1px solid var(--card-border);
+      padding: 48px 40px; text-align: center; color: #c7d2fe;
+    }
+    .footer-logo { font-size: 1.3rem; font-weight: 800; color: white; margin-bottom: 10px; }
+    .footer-tagline { font-size: 0.89rem; color: #a5b4fc; margin-bottom: 28px; line-height: 1.6; }
+    .footer-links { display: flex; justify-content: center; gap: 28px; flex-wrap: wrap; margin-bottom: 28px; }
+    .footer-links a { color: #a5b4fc; text-decoration: none; font-size: 0.85rem; transition: color 0.3s; }
+    .footer-links a:hover { color: white; }
+    .footer-copy { font-size: 0.79rem; color: #6b7dbf; }
+
+    @keyframes fadeInUp { from { opacity: 0; transform: translateY(30px); } to { opacity: 1; transform: translateY(0); } }
+    @keyframes fadeInDown { from { opacity: 0; transform: translateY(-20px); } to { opacity: 1; transform: translateY(0); } }
+    @keyframes fadeInLeft { from { opacity: 0; transform: translateX(-20px); } to { opacity: 1; transform: translateX(0); } }
+
+    .fade-in { opacity: 0; transform: translateY(30px); transition: opacity 0.7s ease, transform 0.7s ease; }
+    .fade-in.visible { opacity: 1; transform: translateY(0); }
+
+    @media (max-width: 768px) {
+      nav { padding: 12px 18px; }
+      .nav-links { display: none; }
+      section { padding: 55px 16px; }
+      .register-form { padding: 24px 18px; }
+      .form-grid { grid-template-columns: 1fr; }
+      .timeline::before { left: 20px; }
+      .timeline-dot { width: 50px; }
+      .hero-stats { gap: 12px; flex-wrap: wrap; justify-content: center; }
+      .route-visual { padding: 18px 14px; }
+      
+      /* Mobile images: vertical stack */
+      .day-images { grid-template-columns: 1fr !important; gap: 10px !important; }
+      .day-images img { width: 100% !important; height: auto !important; max-height: none !important; aspect-ratio: 4/3 !important; border-radius: 12px !important; }
+      
+      /* Hero compact on mobile */
+      .hero-title { font-size: 2rem !important; letter-spacing: -0.5px !important; }
+      .hero-subtitle { font-size: 0.95rem !important; margin-bottom: 12px !important; }
+      .hero-desc { display: none; }  /* Hide long desc on mobile for clean look */
+      .stat-item { padding: 12px 14px; min-width: calc(50% - 8px); flex: 1 1 auto; }
+      .section-title { font-size: 1.6rem !important; }
+      .highlights-grid { grid-template-columns: 1fr !important; }
+      .destinations-grid { grid-template-columns: 1fr !important; }
+      .companies-grid { grid-template-columns: 1fr !important; }
+      .company-card { padding: 22px 18px !important; }
+    }
+
+    @media (max-width: 480px) {
+      .hero-title { font-size: 1.65rem !important; }
+      .hero-cta { flex-direction: column; align-items: center; }
+      .btn-primary, .btn-secondary { width: 100%; text-align: center; box-sizing: border-box; }
+      .city-circle { width: 48px; height: 48px; font-size: 1.3rem; }
+      .city-name { font-size: 0.72rem; }
+      .route-arrow { font-size: 1.1rem; }
+    }
+  </style>
+</head>
+<body>
+
+<div class="bg-animation"></div>
+<div class="floating-shapes" id="floatingShapes"></div>
+
+<nav>
+  <a href="#" class="nav-logo"><div class="logo-icon">🤖</div><span>MagiKid</span></a>
+  <ul class="nav-links">
+    <li><a href="#highlights" data-i18n="nav.highlights">Highlights</a></li>
+    <li><a href="#destinations" data-i18n="nav.destinations">Destinations</a></li>
+    <li><a href="#itinerary" data-i18n="nav.itinerary">Itinerary</a></li>
+    <li><a href="#companies" data-i18n="nav.companies">Partners</a></li>
+    <li><a href="#register" class="btn-primary" data-i18n="nav.register" style="padding:9px 22px;font-size:0.88rem;">Apply Now</a></li>
+  </ul>
+  <div class="lang-toggle">
+    <button class="lang-btn active" id="btn-en" onclick="setLang('en')">EN</button>
+    <button class="lang-btn" id="btn-zh" onclick="setLang('zh')">中文</button>
+  </div>
+</nav>
+
+<!-- ===== HERO ===== -->
+<section class="hero" id="home">
+  <div class="hero-badge" data-i18n="hero.badge">2026 Summer Program</div>
+  <div class="hero-date-badge">📅 July 7 – 16, 2026</div>
+  <h1 class="hero-title">
+    <div data-i18n="hero.title1">AI &amp; Robotics</div>
+    <div class="gradient-text" data-i18n="hero.title2">Summer Tour · China</div>
+  </h1>
+  <p class="hero-subtitle" data-i18n="hero.subtitle">Where Future Innovators Meet the World's Most Advanced Robots — In Person</p>
+  <p class="hero-desc" data-i18n="hero.desc">
+    From Los Angeles to Shanghai — join an exclusive cohort of young innovators on a 10-day journey through China's AI and robotics frontier.
+    Go behind the scenes at DJI, interact with humanoid robots, explore Huaqiangbei electronics market, and discover internship pathways with leading tech companies.
+  </p>
+  <div class="hero-cta">
+    <a href="#register" class="btn-primary" data-i18n="hero.cta1">Apply Now →</a>
+    <a href="#itinerary" class="btn-secondary" data-i18n="hero.cta2">View Itinerary</a>
+  </div>
+  <div class="hero-stats">
+    <div class="stat-item"><span class="stat-num">10</span><span class="stat-label" data-i18n="stats.days">Days</span></div>
+    <div class="stat-item"><span class="stat-num">4</span><span class="stat-label" data-i18n="stats.cities">Cities</span></div>
+    <div class="stat-item"><span class="stat-num">5+</span><span class="stat-label" data-i18n="stats.companies">Tech Giants</span></div>
+    <div class="stat-item"><span class="stat-num">∞</span><span class="stat-label" data-i18n="stats.memories">Possibilities</span></div>
+  </div>
+  <div class="scroll-indicator">
+    <span data-i18n="hero.scroll">Scroll to explore</span>
+    <div class="scroll-arrow"></div>
+  </div>
+</section>
+
+<!-- ===== HIGHLIGHTS ===== -->
+<section id="highlights">
+  <div class="section-header fade-in">
+    <div class="section-tag" data-i18n="sec.highlights.tag">Why This Tour?</div>
+    <h2 class="section-title" data-i18n="sec.highlights.title">What You'll Actually <span class="accent">Experience</span></h2>
+    <div class="divider"></div>
+    <p class="section-desc" data-i18n="sec.highlights.desc">
+      No textbooks. No lectures. Just real-world access to the companies and technologies that are reshaping our world.
+      Every day is packed with hands-on experiences you can't get anywhere else in America.
+    </p>
+  </div>
+  <div class="highlights-grid">
+    <div class="highlight-card fade-in">
+      <span class="highlight-icon">🦾</span>
+      <h3 data-i18n="hl.1.title">Meet Humanoid Robots Face-to-Face</h3>
+      <p data-i18n="hl.1.desc">Watch Fourier Intelligence's GR-1 humanoid robot walk, talk, and perform tasks in real time. At Engine AI, see how next-gen actuators and AI models make robots move like humans. These aren't demos on YouTube — they're live, up close, and you can ask the engineers how they built them.</p>
+    </div>
+    <div class="highlight-card fade-in">
+      <span class="highlight-icon">🚁</span>
+      <h3 data-i18n="hl.2.title">Inside DJI — The Drone Empire</h3>
+      <p data-i18n="hl.2.desc">Step inside DJI's global headquarters in Shenzhen — the company that owns over 70% of the world's consumer drone market. Get hands-on flight training, tour their R&D labs, learn about computer vision and autonomous navigation, and pilot the latest drones yourself.</p>
+    </div>
+    <div class="highlight-card fade-in">
+      <span class="highlight-icon">🔩</span>
+      <h3 data-i18n="hl.3.title">Huaqiangbei: The Hardware Hacker's Paradise</h3>
+      <p data-i18n="hl.3.desc">Navigate the world's largest electronics market — 1,500+ stalls spanning 70+ buildings. Learn how hardware startups source components for $1 that cost $10 back home. Build your own mini robot prototype using parts you pick out yourself.</p>
+    </div>
+    <div class="highlight-card fade-in">
+      <span class="highlight-icon">🌏</span>
+      <h3 data-i18n="hl.4.title">Live Like a Local — Culture Meets Tech</h3>
+      <p data-i18n="hl.4.desc">Ride the world's fastest elevator in Shanghai Tower (128 floors, 45 seconds). Browse books in a cloud-level bookstore. Soak in ancient hot springs in Zhuhai. Taste authentic dim sum, xiaolongbao, and Cantonese cuisine. Experience a culture where technology and tradition coexist beautifully.</p>
+    </div>
+    <div class="highlight-card fade-in">
+      <span class="highlight-icon">🎓</span>
+      <h3 data-i18n="hl.5.title">Internship & Research Pathways</h3>
+      <p data-i18n="hl.5.desc">This isn't just sightseeing — it's career building. Meet hiring managers and research directors who are actively looking for bright American students to join their teams as interns, research assistants, and future engineers. Bring your resume.</p>
+    </div>
+    <div class="highlight-card fade-in">
+      <span class="highlight-icon">🤝</span>
+      <h3 data-i18n="hl.6.title">Your Global Network Starts Here</h3>
+      <p data-i18n="hl.6.desc">You'll travel alongside a curated group of ambitious students who share your passion for AI and robotics. Make friends across cultures, connect with Chinese engineering mentors, and build relationships that could lead to university recommendations, research collaborations, or startup cofounders down the road.</p>
+    </div>
+  </div>
+</section>
+
+<!-- ===== DESTINATIONS ===== -->
+<section id="destinations" style="background: var(--bg-section-alt);">
+  <div class="section-header fade-in">
+    <div class="section-tag" data-i18n="sec.dest.tag">The Route</div>
+    <h2 class="section-title" data-i18n="sec.dest.title">From LAX to <span class="accent">China's Innovation Belt</span></h2>
+    <div class="divider"></div>
+  </div>
+  <div class="route-visual fade-in">
+    <div class="route-cities">
+      <div class="city-node"><div class="city-circle">✈️</div><div class="city-name" data-i18n="city.departure">Depart LAX</div><div class="city-days">Jul 7</div></div>
+      <div class="route-arrow">→</div>
+      <div class="city-node"><div class="city-circle">🏙️</div><div class="city-name">上海 Shanghai</div><div class="city-days">Day 1–3</div></div>
+      <div class="route-arrow">→</div>
+      <div class="city-node"><div class="city-circle">🤖</div><div class="city-name">深圳 Shenzhen</div><div class="city-days">Day 4–6</div></div>
+      <div class="route-arrow">→</div>
+      <div class="city-node"><div class="city-circle">🌺</div><div class="city-name">珠海 Zhuhai</div><div class="city-days">Day 7–8</div></div>
+      <div class="route-arrow">→</div>
+      <div class="city-node"><div class="city-circle">🌉</div><div class="city-name">香港 Hong Kong</div><div class="city-days">Day 9</div></div>
+      <div class="route-arrow">→</div>
+      <div class="city-node"><div class="city-circle">🇺🇸</div><div class="city-name">Los Angeles</div><div class="city-days" data-i18n="city.return">Return Jul 16</div></div>
+    </div>
+  </div>
+  <div class="destinations-grid fade-in">
+    <div class="dest-card"><span class="dest-emoji">🏙️</span><h4>Shanghai 上海</h4><p data-i18n="dest.sh">Arrival city · Fourier GR-1 robot lab · Shanghai Tower (world's 2nd tallest) · VR experience · Bund skyline</p></div>
+    <div class="dest-card"><span class="dest-emoji">⚡</span><h4>Shenzhen 深圳</h4><p data-i18n="dest.sz">"Silicon Valley of Hardware" · DJI global HQ · Engine AI humanoid lab · Huaqiangbei market · Startup ecosystem</p></div>
+    <div class="dest-card"><span class="dest-emoji">🌺</span><h4>Zhuhai 珠海</h4><p data-i18n="dest.zh">Coastal innovation hub · Long Teng Electric (PCB/AI hardware leader) · Yu Hot Springs · Cantonese cuisine · Internship opportunities</p></div>
+    <div class="dest-card"><span class="dest-emoji">🌉</span><h4>Hong Kong 香港</h4><p data-i18n="dest.hk">International departure gateway · Shenzhen Bay Port crossing · Hong Kong International Airport</p></div>
+  </div>
+</section>
+
+<!-- ===== COMPANIES ===== -->
+<section id="companies">
+  <div class="section-header fade-in">
+    <div class="section-tag" data-i18n="sec.comp.tag">Exclusive Visits</div>
+    <h2 class="section-title" data-i18n="sec.comp.title">The Companies <span class="accent">Shaping Tomorrow</span></h2>
+    <div class="divider"></div>
+    <p class="section-desc" data-i18n="sec.comp.desc">These aren't museum tours. You'll walk into active R&D facilities, meet the people building the future, and get hands-on with technology most Americans only read about online.</p>
+  </div>
+  <div class="companies-grid">
+    <div class="company-card fade-in">
+      <span class="company-logo">🦿</span>
+      <h4>Fourier Intelligence 傅利叶智能</h4>
+      <p data-i18n="comp.fourier">Shanghai-based pioneer of rehabilitation robotics and the GR-1 humanoid robot — one of the world's first mass-produced general-purpose humanoid robots capable of walking, carrying objects, and performing complex tasks. See it live in action.</p>
+      <span class="company-tag tag-robot" data-i18n="tag.humanoid">Humanoid Robot Pioneer</span>
+    </div>
+    <div class="company-card fade-in">
+      <span class="company-logo">🤖</span>
+      <h4>Engine AI 众擎机器人</h4>
+      <p data-i18n="comp.engine">A rising star in Chinese robotics, pushing the boundaries of AI-driven locomotion, proprioception, and whole-body coordination. Their latest humanoid platform represents the cutting edge of what's possible today.</p>
+      <span class="company-tag tag-ai">AI-Powered Motion</span>
+    </div>
+    <div class="company-card fade-in">
+      <span class="company-logo">🚁</span>
+      <h4>DJI 大疆创新</h4>
+      <p data-i18n="comp.dji">The undisputed global leader in consumer drones, professional camera systems, and agricultural drones — commanding over 70% of the worldwide market. Visit their Shenzhen Sky City campus and fly their latest aircraft yourself.</p>
+      <span class="company-tag tag-drone" data-i18n="tag.drone">Global Drone Leader</span>
+    </div>
+    <div class="company-card fade-in">
+      <span class="company-logo">🏭</span>
+      <h4>Huaqiangbei 华强北</h4>
+      <p data-i18n="comp.hqb">The legendary electronics market where every hardware startup in Silicon Valley secretly sources parts. 1,500+ vendors, millions of components, and the fastest prototyping cycle on Earth. A must-experience for any aspiring engineer.</p>
+      <span class="company-tag tag-hardware" data-i18n="tag.hardware">Hardware Ecosystem</span>
+    </div>
+    <div class="company-card fade-in">
+      <span class="company-logo">🔧</span>
+      <h4>Long Teng Electric 龙腾电子</h4>
+      <p data-i18n="comp.longteng">China's leading PCB manufacturer and comprehensive AI hardware supplier specializing in optical modules, circuit boards, and electronic components that power robotics, telecommunications, and AI computing infrastructure worldwide.</p>
+      <span class="company-tag tag-ai">PCB & Optical Module Leader</span>
+    </div>
+  </div>
+</section>
+
+<!-- ===== ITINERARY ===== -->
+<section id="itinerary" style="background: var(--bg-section-alt);">
+  <div class="section-header fade-in" style="max-width:1100px;margin:0 auto 60px;">
+    <div class="section-tag" data-i18n="sec.itin.tag">Full Schedule</div>
+    <h2 class="section-title" data-i18n="sec.itin.title">10 Days That Could <span class="accent">Change Your Life</span></h2>
+    <div class="divider"></div>
+    <p class="section-desc" data-i18n="sec.itin.desc">July 7 – July 16, 2026 · Every day designed to inspire, educate, and open doors</p>
+  </div>
+  <div class="timeline" style="max-width:900px;margin:0 auto;padding:0 20px;">
+
+    <!-- Day 1 -->
+    <div class="timeline-item fade-in">
+      <div class="timeline-dot"><div class="dot"></div><div class="day-label">Jul 7<br>Mon<br>Day 1</div></div>
+      <div class="timeline-content">
+        <div class="location-tag">📍 Shanghai, China</div>
+        <h3><span class="icon">✈️</span> <span data-i18n="day1.title">Welcome to Shanghai! Arrival & Orientation</span></h3>
+        <ul>
+          <li data-i18n="day1.a">Arrive at Shanghai Pudong Airport (PVG) — meet tour guides at arrivals hall</li>
+          <li data-i18n="day1.b">Hotel check-in near The Bund waterfront district</li>
+          <li data-i18n="day1.c">Afternoon orientation: team briefing, safety guidelines, tour welcome pack distribution</li>
+          <li data-i18n="day1.d">Evening stroll along The Bund — colonial architecture meets futuristic Pudong skyline</li>
+        </ul>
+        <div class="day-images img-count-3">
+          <img src="images/Day1-1.png" alt="Day photo" class="day-photo" onerror="this.classList.add('img-missing')"><img src="images/Day1-2.png" alt="Day photo" class="day-photo" onerror="this.classList.add('img-missing')"><img src="images/Day1-3.png" alt="Day photo" class="day-photo" onerror="this.classList.add('img-missing')">
+        </div>
+      </div>
+    </div>
+
+    <!-- Day 2 -->
+    <div class="timeline-item fade-in">
+      <div class="timeline-dot"><div class="dot"></div><div class="day-label">Jul 8<br>Tue<br>Day 2</div></div>
+      <div class="timeline-content">
+        <div class="location-tag">📍 Shanghai — Zhangjiang Hi-Tech Park</div>
+        <h3><span class="icon">🦿</span> <span data-i18n="day2.title">Fourier Intelligence: Humanoid Robot R&D Deep Dive</span></h3>
+        <ul>
+          <li data-i18n="day2.a">Visit Zhangjiang Hi-Tech Park — China's premier innovation hub</li>
+          <li data-i18n="day2.b">Live demonstration of GR-1 General Purpose Humanoid Robot — walking, balancing, task execution</li>
+          <li data-i18n="day2.c">Lab tour: Rehabilitation robotics exoskeleton systems used globally</li>
+          <li data-i18n="day2.d">Hands-on workshop: Control a robotic arm via simple programming interface + Q&A session</li>
+        </ul>
+        <div class="day-images img-count-3">
+          <img src="images/Day2-1.png" alt="Day photo" class="day-photo" onerror="this.classList.add('img-missing')"><img src="images/Day2-2.png" alt="Day photo" class="day-photo" onerror="this.classList.add('img-missing')"><img src="images/Day2-3.png" alt="Day photo" class="day-photo" onerror="this.classList.add('img-missing')">
+        </div>
+      </div>
+    </div>
+
+    <!-- Day 3 -->
+    <div class="timeline-item fade-in">
+      <div class="timeline-dot"><div class="dot"></div><div class="day-label">Jul 9<br>Wed<br>Day 3</div></div>
+      <div class="timeline-content">
+        <div class="location-tag">📍 Shanghai — Lujiazui & Pudong</div>
+        <h3><span class="icon">🏙️</span> <span data-i18n="day3.title">Shanghai's Icons: Engineering Marvels & Cultural Treasures</span></h3>
+        <ul>
+          <li data-i18n="day3.a">Shanghai Tower — ascend the world's 2nd tallest building (632m / 2073ft)</li>
+          <li data-i18n="day3.b">World's Fastest Elevator — 18 m/s (40 mph!) ride to floor 118 observation deck</li>
+          <li data-i18n="day3.c">Duoyun Bookstore (朵云书院) + China Art Museum (中华艺术宫) — culture and art immersion</li>
+          <li data-i18n="day3.d">VR Interactive Experience Hall + Huangpu River evening cruise</li>
+        </ul>
+        <div class="day-images img-count-1">
+          <img src="images/Day3-1.png" alt="Shanghai Tower & Lujiazui" class="day-photo">
+        </div>
+      </div>
+    </div>
+
+    <!-- Day 4 -->
+    <div class="timeline-item fade-in">
+      <div class="timeline-dot"><div class="dot"></div><div class="day-label">Jul 10<br>Thu<br>Day 4</div></div>
+      <div class="timeline-content">
+        <div class="location-tag">📍 Shanghai → Shenzhen (High-Speed Rail)</div>
+        <h3><span class="icon">🚄</span> <span data-i18n="day4.title">Speed Into China's Silicon Valley — Shenzhen</span></h3>
+        <ul>
+          <li data-i18n="day4.a">Fuxing high-speed train — cruise at 350 km/h (217 mph), ~8 hours to Shenzhen</li>
+          <li data-i18n="day4.b">On-board session: "How Shenzhen Went From Fishing Village to Tech Giant in 40 Years"</li>
+          <li data-i18n="day4.c">Arrive Shenzhen North Station — hotel check-in in Nanshan District (tech core area)</li>
+          <li data-i18n="day4.d">Evening: Shenzhen city exploration — Talent Park, SEA WORLD, tech ecosystem overview</li>
+        </ul>
+        
+        </div>
+      </div>
+    </div>
+
+    <!-- Day 5 -->
+    <div class="timeline-item fade-in">
+      <div class="timeline-dot"><div class="dot"></div><div class="day-label">Jul 11<br>Fri<br>Day 5</div></div>
+      <div class="timeline-content">
+        <div class="location-tag">📍 Shenzhen — Futian & Huaqiangbei</div>
+        <h3><span class="icon">🔩</span> <span data-i18n="day5.title">Huaqiangbei: The Ultimate Hardware Scavenger Hunt</span></h3>
+        <ul>
+          <li data-i18n="day5.a">Briefing: How hardware startups go from idea to product in Shenzhen ("Shenzhen Speed")</li>
+          <li data-i18n="day5.b">Guided scavenger hunt through Huaqiangbei Electronics World — find sensors, motors, microcontrollers</li>
+          <li data-i18n="day5.c">Rapid prototyping workshop: Build a mini robot using scavenged parts + Arduino/ESP32 kits</li>
+          <li data-i18n="day5.d">Team competition: Whose mini-bot wins the obstacle course?</li>
+        </ul>
+        <div class="day-images img-count-1">
+          <img src="images/Day5-1.png" alt="Huaqiangbei Electronics Market" class="day-photo">
+        </div>
+      </div>
+    </div>
+
+    <!-- Day 6 -->
+    <div class="timeline-item fade-in">
+      <div class="timeline-dot"><div class="dot"></div><div class="day-label">Jul 12<br>Sat<br>Day 6</div></div>
+      <div class="timeline-content">
+        <div class="location-tag">📍 Shenzhen — Nanshan DJI Campus & Engine AI Lab</div>
+        <h3><span class="icon">🚁</span> <span data-i18n="day6.title">DJI Sky City + Engine AI: Two Giants, One Day</span></h3>
+        <ul>
+          <li data-i18n="day6.a">Morning: Engine AI Lab — humanoid actuation, force sensing, reinforcement learning for locomotion</li>
+          <li data-i18n="day6.b">Live demo: Engine AI's humanoid navigating terrain, climbing stairs, responding to voice commands</li>
+          <li data-i18n="day6.c">Afternoon: DJI Sky City HQ — tour the drone-shaped corporate campus</li>
+          <li data-i18n="day6.d">Flight simulator experience + Computer Vision workshop: how DJI obstacle avoidance works</li>
+        </ul>
+        <div class="day-images img-count-3">
+          <img src="images/Day6-1.png" alt="Day photo" class="day-photo" onerror="this.classList.add('img-missing')"><img src="images/Day6-2.png" alt="Day photo" class="day-photo" onerror="this.classList.add('img-missing')"><img src="images/Day6-3.png" alt="Day photo" class="day-photo" onerror="this.classList.add('img-missing')">
+        </div>
+      </div>
+    </div>
+
+    <!-- Day 7 -->
+    <div class="timeline-item fade-in">
+      <div class="timeline-dot"><div class="dot"></div><div class="day-label">Jul 13<br>Sun<br>Day 7</div></div>
+      <div class="timeline-content">
+        <div class="location-tag">📍 Shenzhen → Zhuhai (Coastal Highway)</div>
+        <h3><span class="icon">🌺</span> <span data-i18n="day7.title">Zhuhai: Where Ancient Culture Meets Modern Innovation</span></h3>
+        <ul>
+          <li data-i18n="day7.a">Scenic coastal drive along Shenzhen-Zhuhai highway — ocean views, bridges, HK-Zhuhai-Macao Bridge visible</li>
+          <li data-i18n="day7.b">Yu Hot Springs (御温泉): Traditional Tang Dynasty-style thermal pools & classical gardens</li>
+          <li data-i18n="day7.c">Cultural cooking class + traditional tea ceremony experience</li>
+          <li data-i18n="day7.d">Sunset at Zhuhai Fisher Girl Statue overlooking Macau across the water</li>
+        </ul>
+        <div class="day-images img-count-2">
+          <img src="images/Day7-1.png" alt="Zhuhai Hot Springs" class="day-photo"><img src="images/Day7-2.png" alt="Yu Hot Springs Garden" class="day-photo">
+        </div>
+      </div>
+    </div>
+
+    <!-- Day 8 -->
+    <div class="timeline-item fade-in">
+      <div class="timeline-dot"><div class="dot"></div><div class="day-label">Jul 14<br>Mon<br>Day 8</div></div>
+      <div class="timeline-content">
+        <div class="location-tag">📍 Zhuhai — High-Tech Industrial Zone</div>
+        <h3><span class="icon">🔧</span> <span data-i18n="day8.title">Long Teng Electric: Your Gateway to Internships & Research</span></h3>
+        <ul>
+          <li data-i18n="day8.a">Long Teng Electric factory & R&D center tour — see PCB manufacturing lines, optical module production</li>
+          <li data-i18n="day8.b">Engineering showcase: AI-powered hardware solutions, smart manufacturing, and supply chain technology</li>
+          <li data-i18n="day8.c">Internship info session: Summer research positions and career pathways for international students</li>
+          <li data-i18n="day8.d">Resume clinic + networking session with company leadership and engineering teams</li>
+        </ul>
+        <div class="day-images img-count-2">
+          <img src="images/Day8-1.png" alt="Long Teng Electric Factory" class="day-photo"><img src="images/Day8-2.png" alt="PCB Manufacturing Line" class="day-photo">
+        </div>
+      </div>
+    </div>
+
+    <!-- Day 9 -->
+    <div class="timeline-item fade-in">
+      <div class="timeline-dot"><div class="dot"></div><div class="day-label"> Jul 15<br>Tue<br>Day 9</div></div>
+      <div class="timeline-content">
+        <div class="location-tag">📍 Zhuhai → Shenzhen Bay → Hong Kong → ✈️ LAX</div>
+        <h3><span class="icon">🛫</span> <span data-i18n="day9.title">Departure Day — From China Back to California</span></h3>
+        <ul>
+          <li data-i18n="day9.a">Transfer from Zhuhai to Shenzhen Bay Port (深圳湾口岸) — cross-border checkpoint</li>
+          <li data-i18n="day9.b">Cross into Hong Kong via Shenzhen Bay Bridge</li>
+          <li data-i18n="day9.c">Hong Kong International Airport (HKG) transfer — duty-free shopping & final souvenirs</li>
+          <li data-i18n="day9.d">Board flight: Hong Kong (HKG) → Los Angeles (LAX), approximately 14 hours non-stop</li>
+        </ul>
+        <div class="day-images img-count-1">
+          <img src="images/Day9-1.png" alt="Hong Kong Airport Departure" class="day-photo">
+        </div>
+      </div>
+    </div>
+
+    <!-- Day 10 -->
+    <div class="timeline-item fade-in">
+      <div class="timeline-dot"><div class="dot"></div><div class="day-label">Jul 16<br>Wed<br>Day 10</div></div>
+      <div class="timeline-content">
+        <div class="location-tag">📍 🇺🇸 Los Angeles, USA</div>
+        <h3><span class="icon">🏠</span> <span data-i18n="day10.title">Welcome Home — The Journey Continues</span></h3>
+        <ul>
+          <li data-i18n="day10.a">Land at Los Angeles International Airport (LAX) — end of an unforgettable 10-day adventure</li>
+          <li data-i18n="day10.b">Post-tour follow-up within 48 hours: digital photo album, certificate of participation, contact list, internship materials</li>
+          <li data-i18n="day10.c">Optional: Join alumni network — ongoing mentorship, monthly webinars, and reunion events</li>
+        </ul>
+        
+        </div>
+      </div>
+    </div>
+
+  </div>
+
+  <!-- Disclaimer -->
+  <div class="disclaimer-note fade-in" style="max-width:800px;margin:50px auto 0;" data-i18n="disclaimer.text">
+    ⚠️ <strong>Note:</strong> This itinerary is for reference purposes only. The final schedule is subject to the official agreement/contract signed between participants and the organizer. Actual dates, activities, venues, and arrangements may be adjusted based on operational requirements, weather conditions, availability of host companies, and other factors beyond our control.
+  </div>
+</section>
+
+<!-- ===== REGISTRATION ===== -->
+<section id="register">
+  <div class="section-header fade-in">
+    <div class="section-tag" data-i18n="sec.reg.tag">Application</div>
+    <h2 class="section-title" data-i18n="sec.reg.title">Secure Your Spot on the <span class="accent">2026 Tour</span></h2>
+    <div class="divider"></div>
+    <p class="section-desc" data-i18n="sec.reg.desc">
+      Spaces are strictly limited to ensure a premium experience with personalized attention.
+      Applications are reviewed on a rolling basis — early applicants receive priority consideration
+      and exclusive pre-departure resources including language preparation packs and recommended reading lists.
+    </p>
+  </div>
+  <div class="register-container">
+    <div class="register-form fade-in">
+      <div id="form-area">
+        <form id="application-form" onsubmit="submitForm(event)">
+          <div class="form-grid">
+            <div class="form-group">
+              <label data-i18n="form.firstname">First Name <span class="required">*</span></label>
+              <input type="text" class="form-control" id="firstName" placeholder="e.g. Alex" required />
+            </div>
+            <div class="form-group">
+              <label data-i18n="form.lastname">Last Name <span class="required">*</span></label>
+              <input type="text" class="form-control" id="lastName" placeholder="e.g. Johnson" required />
+            </div>
+            <div class="form-group">
+              <label data-i18n="form.dob">Date of Birth <span class="required">*</span></label>
+              <input type="date" class="form-control" id="dob" required />
+            </div>
+            <div class="form-group">
+              <label data-i18n="form.grade">Current Grade Level</label>
+              <select class="form-control" id="grade">
+                <option value="" disabled selected>Select grade</option>
+                <option value="6">Grade 6 (Middle School)</option>
+                <option value="7">Grade 7 (Middle School)</option>
+                <option value="8">Grade 8 (Middle School)</option>
+                <option value="9">Grade 9 (Freshman)</option>
+                <option value="10">Grade 10 (Sophomore)</option>
+                <option value="11">Grade 11 (Junior)</option>
+                <option value="12">Grade 12 (Senior)</option>
+                <option value="college">College Undergraduate</option>
+                <option value="grad">Graduate Student</option>
+              </select>
+            </div>
+            <div class="form-group">
+              <label data-i18n="form.email">Email Address <span class="required">*</span></label>
+              <input type="email" class="form-control" id="email" placeholder="you@email.com" required />
+            </div>
+            <div class="form-group">
+              <label data-i18n="form.phone">Phone / WhatsApp <span class="required">*</span></label>
+              <input type="tel" class="form-control" id="phone" placeholder="+1 (310) 555-0000" required />
+            </div>
+            <div class="form-group">
+              <label data-i18n="form.gpa">Unweighted GPA (out of 4.0)</label>
+              <input type="number" class="form-control" id="gpa" min="0" max="4.0" step="0.01" placeholder="e.g. 3.85" />
+            </div>
+            <div class="form-group">
+              <label data-i18n="form.country">Country of Residence</label>
+              <select class="form-control" id="country">
+                <option value="" disabled selected>Select country</option>
+                <option value="US">United States 🇺🇸</option>
+                <option value="CN">China / 中国 🇨🇳</option>
+                <option value="CA">Canada 🇨🇦</option>
+                <option value="UK">United Kingdom 🇬🇧</option>
+                <option value="AU">Australia 🇦🇺</option>
+                <option value="other">Other</option>
+              </select>
+            </div>
+            <div class="form-group full-width">
+              <label data-i18n="form.transcript">Official Transcript / Academic Record <span class="required">*</span></label>
+              <div class="file-upload-area" id="dropZone">
+                <input type="file" id="transcript" accept=".pdf,.jpg,.jpeg,.png,.doc,.docx" onchange="handleFileSelect(event)" />
+                <span class="upload-icon">📄</span>
+                <div class="upload-text"><strong data-i18n="form.upload.click">Click to upload</strong> <span data-i18n="form.upload.or">or drag and drop</span></div>
+                <div class="upload-hint" data-i18n="form.upload.hint">Accepted formats: PDF, JPG, PNG, DOC — Maximum file size 10MB</div>
+                <div class="file-name-display" id="fileNameDisplay"></div>
+              </div>
+            </div>
+            <div class="form-group full-width">
+              <label data-i18n="form.resume">Personal Resume / CV <span class="required">*</span></label>
+              <div class="file-upload-area" id="resumeDropZone">
+                <input type="file" id="resume" accept=".pdf,.jpg,.jpeg,.png,.doc,.docx" onchange="handleResumeSelect(event)" />
+                <span class="upload-icon">📋</span>
+                <div class="upload-text"><strong data-i18n="form.resume.click">Click to upload</strong> <span data-i18n="form.resume.or">or drag and drop</span></div>
+                <div class="upload-hint" data-i18n="form.resume.hint">PDF, DOC, JPG accepted — Max 10MB. Include education, projects, skills, and any relevant experience</div>
+                <div class="file-name-display" id="resumeFileNameDisplay"></div>
+              </div>
+            </div>
+            <div class="form-group full-width">
+              <label data-i18n="form.motivation">Personal Statement (Optional but Recommended)</label>
+              <textarea class="form-control" id="motivation" rows="4" placeholder="Tell us about yourself! What excites you about AI and robotics? Have you built any projects? Any prior coding or engineering experience? Why do you want to join this tour?" style="resize:vertical;"></textarea>
+            </div>
+          </div>
+          <button type="submit" class="form-submit-btn">
+            <span data-i18n="form.submit">Submit My Application →</span>
+          </button>
+          <p class="form-note" data-i18n="form.note">
+            🔒 Your personal information is encrypted and securely stored. Our admissions team reviews every application personally and will reach out within 3–5 business days.
+          </p>
+        </form>
+      </div>
+      <div class="success-msg" id="success-msg">
+        <span class="success-icon">🎉</span>
+        <h3 data-i18n="success.title">Application Successfully Submitted!</h3>
+        <p data-i18n="success.desc">
+          Thank you for applying to the 2026 AI Robotics Summer Tour! Our admissions committee will carefully review your application
+          and get back to you within 3–5 business days. In the meantime, check your email for a confirmation receipt.
+          Get ready — this could be the adventure of a lifetime!
+        </p>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- ===== FOOTER ===== -->
+<footer>
+  <div class="footer-logo">🤖 MagiKid AI &amp; Robotics Summer Programs</div>
+  <p class="footer-tagline" data-i18n="footer.tagline">Bridging the Pacific — connecting America's brightest young minds with China's cutting-edge AI and robotics frontier</p>
+  <div class="footer-links">
+    <a href="#home" data-i18n="nav.home">Home</a>
+    <a href="#highlights" data-i18n="nav.highlights">Highlights</a>
+    <a href="#itinerary" data-i18n="nav.itinerary">Itinerary</a>
+    <a href="#register" data-i18n="nav.register">Apply Now</a>
+  </div>
+  <p class="footer-copy" data-i18n="footer.copy">© 2026 MagiKid Education. All rights reserved. | AI Robotics Summer Tour 2026 | Los Angeles ↔ Shanghai ↔ Shenzhen ↔ Zhuhai ↔ Hong Kong</p>
+</footer>
+
+<!-- ===== JAVASCRIPT ===== -->
+<script>
+const i18n = {
+  en: {
+    "nav.highlights": "Highlights",
+    "nav.destinations": "Destinations",
+    "nav.itinerary": "Itinerary",
+    "nav.companies": "Partners",
+    "nav.register": "Apply Now",
+    "nav.home": "Home",
+    "hero.badge": "2026 Summer Program",
+    "hero.title1": "AI & Robotics",
+    "hero.title2": "Summer Tour · China",
+    "hero.subtitle": "Where Future Innovators Meet the World's Most Advanced Robots — In Person",
+    "hero.desc": "From Los Angeles to Shanghai — join an exclusive cohort of young innovators on a 10-day journey through China's AI and robotics frontier. Go behind the scenes at DJI's drone labs, interact with humanoid robots from Fourier Intelligence & Engine AI, explore the legendary Huaqiangbei electronics market, and discover internship pathways with leading tech companies. This isn't just a tour — it's your first step into the future of technology.",
+    "hero.cta1": "Apply Now →",
+    "hero.cta2": "View Itinerary",
+    "hero.scroll": "Scroll to explore",
+    "stats.days": "Days",
+    "stats.cities": "Cities",
+    "stats.companies": "Tech Giants",
+    "stats.memories": "Possibilities",
+    "sec.highlights.tag": "Why This Tour?",
+    "sec.highlights.title": "What You'll Actually <span class='accent'>Experience</span>",
+    "sec.highlights.desc": "No textbooks. No lectures. Just real-world access to the companies and technologies that are reshaping our world. Every day is packed with hands-on experiences you can't get anywhere else in America.",
+    "hl.1.title": "Meet Humanoid Robots Face-to-Face",
+    "hl.1.desc": "Watch Fourier Intelligence's GR-1 humanoid robot walk, talk, and perform tasks in real time. At Engine AI, see how next-gen actuators and AI models make robots move like humans. These aren't demos on YouTube — they're live, up close, and you can ask the engineers how they built them.",
+    "hl.2.title": "Inside DJI — The Drone Empire",
+    "hl.2.desc": "Step inside DJI's global headquarters in Shenzhen — the company that owns over 70% of the world's consumer drone market. Get hands-on flight training, tour their R&D labs, learn about computer vision and autonomous navigation, and pilot the latest drones yourself.",
+    "hl.3.title": "Huaqiangbei: The Hardware Hacker's Paradise",
+    "hl.3.desc": "Navigate the world's largest electronics market — 1,500+ stalls spanning 70+ buildings. Learn how hardware startups source components for $1 that cost $10 back home. Build your own mini robot prototype using parts you pick out yourself.",
+    "hl.4.title": "Live Like a Local — Culture Meets Tech",
+    "hl.4.desc": "Ride the world's fastest elevator in Shanghai Tower (128 floors, 45 seconds). Browse books in a cloud-level bookstore. Soak in ancient hot springs in Zhuhai. Taste authentic dim sum, xiaolongbao, and Cantonese cuisine. Experience a culture where technology and tradition coexist beautifully.",
+    "hl.5.title": "Internship & Research Pathways",
+    "hl.5.desc": "This isn't just sightseeing — it's career building. Meet hiring managers and research directors who are actively looking for bright American students to join their teams as interns, research assistants, and future engineers. Bring your resume.",
+    "hl.6.title": "Your Global Network Starts Here",
+    "hl.6.desc": "You'll travel alongside a curated group of ambitious students who share your passion for AI and robotics. Make friends across cultures, connect with Chinese engineering mentors, and build relationships that could lead to university recommendations, research collaborations, or startup cofounders down the road.",
+    "sec.dest.tag": "The Route",
+    "sec.dest.title": "From LAX to <span class='accent'>China's Innovation Belt</span>",
+    "city.departure": "Depart LAX",
+    "city.return": "Return Jul 16",
+    "dest.sh": "Arrival city · Fourier GR-1 robot lab · Shanghai Tower (world's 2nd tallest) · VR experience · Bund skyline",
+    "dest.sz": "\"Silicon Valley of Hardware\" · DJI global HQ · Engine AI humanoid lab · Huaqiangbei market · Startup ecosystem",
+    "dest.zh": "Coastal innovation hub · Long Teng Electric (PCB/AI hardware leader) · Yu Hot Springs · Cantonese cuisine · Internship opportunities",
+    "dest.hk": "International departure gateway · Shenzhen Bay Port · Hong Kong Int'l Airport",
+    "sec.comp.tag": "Exclusive Visits",
+    "sec.comp.title": "The Companies <span class='accent'>Shaping Tomorrow</span>",
+    "sec.comp.desc": "These aren't museum tours. You'll walk into active R&D facilities, meet the people building the future, and get hands-on with technology most Americans only read about online.",
+    "comp.fourier": "Shanghai-based pioneer of rehabilitation robotics and the GR-1 humanoid robot — one of the world's first mass-produced general-purpose humanoid robots capable of walking, carrying objects, and performing complex tasks. See it live in action.",
+    "comp.engine": "A rising star in Chinese robotics, pushing the boundaries of AI-driven locomotion, proprioception, and whole-body coordination. Their latest humanoid platform represents the cutting edge of what's possible today.",
+    "comp.dji": "The undisputed global leader in consumer drones, professional camera systems, and agricultural drones — commanding over 70% of the worldwide market. Visit their Shenzhen Sky City campus and fly their latest aircraft yourself.",
+    "comp.hqb": "The legendary electronics market where every hardware startup in Silicon Valley secretly sources parts. 1,500+ vendors, millions of components, and the fastest prototyping cycle on Earth. A must-experience for any aspiring engineer.",
+    "comp.longteng": "China's leading PCB manufacturer and comprehensive AI hardware supplier, specializing in optical modules, printed circuit boards, and electronic components that power robotics, telecommunications infrastructure, and AI computing systems worldwide.",
+    "tag.humanoid": "Humanoid Robot Pioneer",
+    "tag.drone": "Global Drone Leader",
+    "tag.hardware": "Hardware Ecosystem",
+    "tag.intern": "Internship Partner",
+    "sec.itin.tag": "Full Schedule",
+    "sec.itin.title": "10 Days That Could <span class='accent'>Change Your Life</span>",
+    "sec.itin.desc": "July 7 – July 16, 2026 · Every day designed to inspire, educate, and open doors",
+    // Day 1
+    "day1.title": "Welcome to Shanghai! Arrival & Orientation",
+    "day1.a": "Arrive at Shanghai Pudong Airport (PVG) — meet tour guides at arrivals hall",
+    "day1.b": "Hotel check-in near The Bund waterfront district",
+    "day1.c": "Afternoon orientation: team briefing, safety guidelines, tour welcome pack distribution",
+    "day1.d": "Evening stroll along The Bund — colonial architecture meets futuristic Pudong skyline",
+    // Day 2
+    "day2.title": "Fourier Intelligence: Humanoid Robot R&D Deep Dive",
+    "day2.a": "Visit Zhangjiang Hi-Tech Park — China's premier innovation hub",
+    "day2.b": "Live demonstration of GR-1 General Purpose Humanoid Robot — walking, balancing, task execution",
+    "day2.c": "Lab tour: Rehabilitation robotics exoskeleton systems used globally",
+    "day2.d": "Hands-on workshop: Control a robotic arm via programming interface + Q&A session",
+    // Day 3
+    "day3.title": "Shanghai's Icons: Engineering Marvels & Cultural Treasures",
+    "day3.a": "Shanghai Tower — ascend the world's 2nd tallest building (632m / 2073ft)",
+    "day3.b": "World's Fastest Elevator — 18 m/s (40 mph!) to floor 118 observation deck",
+    "day3.c": "Duoyun Bookstore (朵云书院) + China Art Museum (中华艺术宫)",
+    "day3.d": "VR Interactive Experience Hall + Huangpu River evening cruise",
+    // Day 4
+    "day4.title": "Speed Into China's Silicon Valley — Shenzhen",
+    "day4.a": "Fuxing high-speed train — 350 km/h (217 mph), ~8 hours to Shenzhen",
+    "day4.b": "On-board session: \"How Shenzhen Went From Fishing Village to Tech Giant\"",
+    "day4.c": "Arrive Shenzhen North — hotel check-in in Nanshan District (tech core area)",
+    "day4.d": "Evening: city exploration — Talent Park, SEA WORLD, tech ecosystem overview",
+    // Day 5
+    "day5.title": "Huaqiangbei: The Ultimate Hardware Scavenger Hunt",
+    "day5.a": "Briefing: How hardware startups go from idea to product in Shenzhen",
+    "day5.b": "Scavenger hunt through Huaqiangbei Electronics World — sensors, motors, microcontrollers",
+    "day5.c": "Rapid prototyping workshop: Build a mini robot with scavenged parts + Arduino/ESP32",
+    "day5.d": "Team competition: Whose mini-bot wins the obstacle course?",
+    // Day 6
+    "day6.title": "DJI Sky City + Engine AI: Two Giants, One Day",
+    "day6.a": "Morning: Engine AI Lab — humanoid actuation, force sensing, reinforcement learning",
+    "day6.b": "Live demo: Engine AI's humanoid navigating terrain, climbing stairs, voice commands",
+    "day6.c": "Afternoon: DJI Sky City HQ — tour the drone-shaped corporate campus",
+    "day6.d": "Flight simulator + CV workshop: how DJI obstacle avoidance works",
+    // Day 7
+    "day7.title": "Zhuhai: Ancient Culture Meets Modern Innovation",
+    "day7.a": "Scenic coastal drive — ocean views, bridges, HK-Zhuhai-Macao Bridge in distance",
+    "day7.b": "Yu Hot Springs (御温泉): Tang Dynasty-style thermal pools & classical gardens",
+    "day7.c": "Cultural cooking class + traditional tea ceremony experience",
+    "day7.d": "Sunset at Zhuhai Fisher Girl Statue overlooking Macau",
+    // Day 8
+    "day8.title": "Long Teng Electric: Your Gateway to Internships & Research",
+    "day8.a": "Factory & R&D center tour — PCB manufacturing lines, optical module production",
+    "day8.b": "Engineering showcase: AI hardware, smart manufacturing, supply chain tech",
+    "day8.c": "Internship info session: Summer research positions & career pathways for international students",
+    "day8.d": "Resume clinic + networking session with leadership & engineering teams",
+    // Day 9
+    "day9.title": "Departure Day — From China Back to California",
+    "day9.a": "Transfer to Shenzhen Bay Port (深圳湾口岸) — cross-border checkpoint",
+    "day9.b": "Cross into Hong Kong via Shenzhen Bay Bridge",
+    "day9.c": "HKG transfer — duty-free shopping & final souvenirs",
+    "day9.d": "Board flight: HKG → LAX (~14 hours non-stop)",
+    // Day 10
+    "day10.title": "Welcome Home — The Journey Continues",
+    "day10.a": "Land at LAX — end of an unforgettable 10-day adventure",
+    "day10.b": "Post-tour package within 48hrs: photo album, certificate, contact list, internship materials",
+    "day10.c": "Optional: Join alumni network — mentorship, webinars & reunions",
+
+    "disclaimer.text": "⚠️ <strong>Note:</strong> This itinerary is for reference purposes only. The final schedule is subject to the official agreement/contract signed between participants and the organizer. Actual dates, activities, venues, and arrangements may be adjusted based on operational requirements, weather conditions, availability of host companies, and other factors beyond our control.",
+
+    "sec.reg.tag": "Application",
+    "sec.reg.title": "Secure Your Spot on the <span class='accent'>2026 Tour</span>",
+    "sec.reg.desc": "Spaces are strictly limited to ensure a premium experience with personalized attention. Applications are reviewed on a rolling basis — early applicants receive priority consideration and exclusive pre-departure resources.",
+    "form.firstname": "First Name",
+    "form.lastname": "Last Name",
+    "form.dob": "Date of Birth",
+    "form.grade": "Current Grade Level",
+    "form.email": "Email Address",
+    "form.phone": "Phone / WhatsApp",
+    "form.gpa": "Unweighted GPA (out of 4.0)",
+    "form.country": "Country of Residence",
+    "form.transcript": "Official Transcript / Academic Record",
+    "form.upload.click": "Click to upload",
+    "form.upload.or": "or drag and drop",
+    "form.upload.hint": "PDF, JPG, PNG, DOC — Max 10MB",
+    "form.resume": "Personal Resume / CV",
+    "form.resume.click": "Click to upload",
+    "form.resume.or": "or drag and drop",
+    "form.resume.hint": "PDF, DOC, JPG accepted — Max 10MB. Include education, projects, skills & experience",
+    "form.motivation": "Personal Statement (Optional but Recommended)",
+    "form.submit": "Submit My Application →",
+    "form.note": "🔒 Your information is encrypted and secure. We'll respond within 3–5 business days.",
+    "success.title": "Application Successfully Submitted!",
+    "success.desc": "Thank you for applying to the 2026 AI Robotics Summer Tour! Our admissions committee will carefully review your application and get back to you within 3–5 business days. Check your email for a confirmation. Get ready — this could be the adventure of a lifetime!",
+    "footer.tagline": "Bridging the Pacific — connecting America's brightest young minds with China's cutting-edge AI and robotics frontier",
+    "footer.copy": "© 2026 MagiKid Education. All rights reserved. | AI Robotics Summer Tour 2026 | Los Angeles ↔ Shanghai ↔ Shenzhen ↔ Zhuhai ↔ Hong Kong"
+  },
+  zh: {
+    "nav.highlights": "核心亮点",
+    "nav.destinations": "目的地",
+    "nav.itinerary": "行程安排",
+    "nav.companies": "参访企业",
+    "nav.register": "立即报名",
+    "nav.home": "首页",
+    "hero.badge": "2026 暑期研学项目",
+    "hero.title1": "AI 与机器人",
+    "hero.title2": "夏季研学之旅 · 中国行",
+    "hero.subtitle": "让未来创新者与全球最先进的机器人面对面——零距离接触",
+    "hero.desc": "从洛杉矶到上海——加入一个由年轻创新者组成的精英团队，开启一段穿越中国人工智能和机器人前沿阵地的10天探索之旅。走进大疆无人机实验室幕后，与傅利叶智能、宇树科技的人形机器人互动交流，探索传奇的华强北电子市场，解锁顶尖科技公司的实习通道。这不只是一次旅行——这是你迈向科技未来的第一步。",
+    "hero.cta1": "立即报名 →",
+    "hero.cta2": "查看完整行程",
+    "hero.scroll": "向下滑动探索",
+    "stats.days": "天",
+    "stats.cities": "座城市",
+    "stats.companies": "家科技巨头",
+    "stats.memories": "种可能",
+    "sec.highlights.tag": "为什么参加？",
+    "sec.highlights.title": "你将真正<span class='accent'>体验什么</span>",
+    "sec.highlights.desc": "没有教科书，没有枯燥讲座——只有真实世界中的顶级企业和尖端技术。每一天都充满你在美国其他地方无法获得的动手实践体验。",
+    "hl.1.title": "与人形机器人面对面",
+    "hl.1.desc": "亲眼观看傅利叶智能GR-1人形机器人行走、说话、执行任务的全过程。在宇树科技，了解最新一代关节驱动器和AI模型如何让机器人像人类一样行动。这不是YouTube上的演示视频——而是现场实况，你可以直接问工程师它们是怎么造出来的。",
+    "hl.2.title": "深入大疆——无人机帝国内部",
+    "hl.2.desc": "走进大疆位于深圳的全球总部——这家公司占据了全球消费级无人机市场70%以上的份额。获得亲手飞行训练体验，参观他们的研发实验室，学习计算机视觉和自主导航技术，亲自驾驶最新型号的无人机。",
+    "hl.3.title": "华强北：硬件创客的天堂",
+    "hl.3.desc": "探索全球最大的电子市场——1500多个摊位遍布70多栋建筑。了解硬件初创企业如何以1美元的价格采购到在美国要卖10美元的零部件。用你自己挑选的零件搭建一台迷你机器人原型。",
+    "hl.4.title": "像当地人一样生活——科技与文化交融",
+    "hl.4.desc": "乘坐世界最快电梯登上上海中心大厦（128层楼，仅用45秒）。在云端书店朵云书院浏览书籍。在珠海泡千年古温泉。品尝正宗广式点心、小笼包和粤菜。体验科技与传统和谐共存的中国文化。",
+    "hl.5.title": "实习与研究发展通道",
+    "hl.5.desc": "这不仅仅是观光——这是职业发展的起点。会见正在积极寻找优秀美国学生加入团队的招聘经理和研究总监，他们提供实习生、研究助理和未来工程师岗位。记得带上你的简历！",
+    "hl.6.title": "你的全球人脉从这里起步",
+    "hl.6.desc": "你将与一群志同道合、对AI和机器人充满热情的优秀同学同行。跨越文化交朋友，与中国工程导师建立联系，这些关系可能在未来转化为大学推荐信、科研合作甚至创业合伙人的机会。",
+    "sec.dest.tag": "路线图",
+    "sec.dest.title": "从洛杉矶飞往<span class='accent'>中国科技创新走廊</span>",
+    "city.departure": "洛杉矶出发",
+    "city.return": "返程 7月16日",
+    "dest.sh": "抵达城市 · 傅利叶GR-1机器人实验室 · 上海中心大厦（全球第二高楼）· VR体验馆 · 外滩天际线",
+    "dest.sz": "\"硬件硅谷\" · 大疆全球总部 · 宇树人形机器人实验室 · 华强北市场 · 创新创业生态圈",
+    "dest.zh": "滨海创新枢纽 · 龙腾电子（PCB/AI硬件领军）· 御温泉 · 粤菜美食 · 实习机会",
+    "dest.hk": "国际出发门户 · 深圳湾口岸 · 香港国际机场",
+    "sec.comp.tag": "独家参访",
+    "sec.comp.title": "塑造未来的<span class='accent'>科技巨头</span>",
+    "sec.comp.desc": "这些不是博物馆参观。你将走进正在运转的研发中心，与建造未来的工程师面对面交流，亲自动手操作大多数美国人只能在网上读到的前沿技术。",
+    "comp.fourier": "总部位于上海的康复机器人和GR-1人形机器人先驱——全球首批量产通用型人形机器人之一，能够行走、搬运物品、执行复杂任务。现场见证它的真实表现。",
+    "comp.engine": "中国机器人领域的新兴明星，不断突破AI驱动的运动控制、本体感知和全身协调边界。其最新人形平台代表了当今技术所能达到的最前沿。",
+    "comp.dji": "无可争议的全球消费级无人机、专业影像系统和农业无人机领导者——占据全球70%以上市场份额。参观深圳天空之城总部园区，亲自驾驶他们最新的飞行器。",
+    "comp.hqb": "传奇电子市场——每一家硅谷硬件创业公司都在这里秘密采购零件。1500多家供应商、数百万种零部件、地球上最快的原型制作周期。每位有志工程师必去之地。",
+    "comp.longteng": "中国头部PCB制造商及综合性AI硬件供应商，专注于光模块、印制电路板和电子元器件，产品广泛应用于机器人、通信基础设施和AI计算系统等领域。",
+    "tag.humanoid": "人形机器人先驱",
+    "tag.drone": "全球无人机领导者",
+    "tag.hardware": "硬件生态系统",
+    "tag.intern": "实习合作伙伴",
+    "sec.itin.tag": "完整日程",
+    "sec.itin.title": "10天，可能<span class='accent'>改变你的一生</span>",
+    "sec.itin.desc": "2026年7月7日至16日 · 每一天都精心设计，只为激发灵感、传授知识、打开机遇之门",
+    // Day 1
+    "day1.title": "欢迎来到上海！抵达与入营仪式",
+    "day1.a": "抵达上海浦东国际机场(PVG) —— 在到达口接机，与导游团队会合",
+    "day1.b": "入住外滩附近滨水区酒店",
+    "day1.c": "下午入营：团队介绍会、安全须知说明、研学礼包发放",
+    "day1.d": "晚间漫步外滩 —— 万国建筑群与陆家嘴未来天际线隔江相望",
+    // Day 2
+    "day2.title": "傅利叶智能：人形机器人研发深度探访",
+    "day2.a": "前往张江高科技园区 —— 中国顶级科技创新中心",
+    "day2.b": "GR-1通用型人形机器人现场演示：行走、平衡、执行任务",
+    "day2.c": "实验室参观：全球医院使用的康复机器人外骨骼系统",
+    "day2.d": "动手工作坊：通过编程界面操控机械臂 + 工程师问答环节",
+    // Day 3
+    "day3.title": "上海地标：工程奇迹与文化瑰宝",
+    "day3.a": "登上上海中心大厦 —— 全球第二高楼（632米）",
+    "day3.b": "世界最快电梯 —— 以18米/秒冲上118层观光厅！",
+    "day3.c": "朵云书院（云端书店）+ 中华艺术宫 —— 文化艺术沉浸体验",
+    "day3.d": "VR互动体验馆 + 黄浦江夜间游船",
+    // Day 4
+    "day4.title": "极速驶入中国硅谷——深圳",
+    "day4.a": "复兴号高速列车 —— 350公里/小时，约8小时抵达深圳",
+    "day4.b": "列车分享会：\"深圳如何用40年从渔村变身科技巨城\"",
+    "day4.c": "抵达深圳北站 —— 入住南山区酒店（科技核心区）",
+    "day4.d": "晚间城市探索 —— 人才公园、海上世界、科技生态全景解读",
+    // Day 5
+    "day5.title": "华强北：终极硬件寻宝挑战赛",
+    "day5.a": "培训导入：硬件创业如何在深圳从想法到产品（\"深圳速度\"）",
+    "day5.b": "引导式寻宝：在华强北电子世界寻找传感器、电机、单片机",
+    "day5.c": "快速原型工作坊：用淘来的零件+Arduino/ESP32组装迷你机器人",
+    "day5.d": "团队PK赛：谁的小机器人能赢得障碍赛道？",
+    // Day 6
+    "day6.title": "大疆天空之城 + 宇树科技：两大巨头一日双访",
+    "day6.a": "上午：宇树科技实验室 —— 人形驱动系统、力矩传感、强化学习运动控制",
+    "day6.b": "实时演示：宇树人形机器人越障碍、爬楼梯、响应语音指令",
+    "day6.c": "下午：大疆天空之城总部 —— 参观无人机造型现代化园区",
+    "day6.d": "飞行模拟器体验 + 计算机视觉入门：大疆避障技术原理",
+    // Day 7
+    "day7.title": "珠海：古老文明与现代创新的交汇",
+    "day7.a": "沿海公路风景大巴 —— 海景、跨海大桥、远眺港珠澳大桥",
+    "day7.b": "御温泉：唐代风格园林温泉，古典建筑中放松身心",
+    "day7.c": "文化烹饪课 + 传统茶道体验",
+    "day7.d": "珠海渔女雕像前观赏日落 —— 远眺对岸澳门",
+    // Day 8
+    "day8.title": "龙腾电子：你的实习与研究之门",
+    "day8.a": "工厂及研发中心参观 —— PCB生产线、光模块制造车间",
+    "day8.b": "工程展示：AI硬件方案、智能制造、供应链技术",
+    "day8.c": "实习信息发布会：暑期研究员岗位与国际学生职业发展通道",
+    "day8.d": "简历诊所 + 与公司管理层及工程团队交流活动",
+    // Day 9
+    "day9.title": "启程日——从中国回到加州",
+    "day9.a": "前往深圳湾口岸（跨境检查站）",
+    "day9.b": "经深圳湾大桥进入香港特别行政区",
+    "day9.c": "香港国际机场转机 —— 免税购物和最后纪念品采购",
+    "day9.d": "登机：香港(HKG) → 洛杉矶(LAX)，直飞约14小时",
+    // Day 10
+    "day10.title": "欢迎回家——旅程才刚刚开始",
+    "day10.a": "降落洛杉矶国际机场(LAX) —— 难忘的10天冒险圆满结束",
+    "day10.b": "行后48小时内发送：数字相册、参与证书、联系人清单、实习申请材料",
+    "day10.c": "可选：加入校友网络 —— 持续导师指导、月度研讨会和线下重聚",
+
+    "disclaimer.text": "⚠️ <strong>重要提示：</strong>本行程仅供参考，最终行程以参与者与主办方签署的正式协议/合同为准。实际日期、活动内容、场地及具体安排可能因运营需求、天气状况、接待方可用性及其他不可控因素进行调整。",
+
+    "sec.reg.tag": "报名申请",
+    "sec.reg.title": "锁定你在<span class='accent'>2026研学</span>中的席位",
+    "sec.reg.desc": "名额严格限制以确保高品质的小团服务和个性化关注。申请采用滚动审核制——早期申请者优先考虑，并获得独家行前资源包。",
+    "form.firstname": "名",
+    "form.lastname": "姓",
+    "form.dob": "出生年月日",
+    "form.grade": "当前年级",
+    "form.email": "电子邮箱",
+    "form.phone": "手机 / WhatsApp",
+    "form.gpa":"未加权GPA（满分4.0）",
+    "form.country": "居住国家",
+    "form.transcript": "官方成绩单 / 学业证明文件",
+    "form.upload.click": "点击上传",
+    "form.upload.or": "或拖拽文件至此",
+    "form.upload.hint": "支持 PDF、JPG、PNG、DOC，最大 10MB",
+    "form.resume": "个人简历 / CV",
+    "form.resume.click": "点击上传",
+    "form.resume.or": "或拖拽文件至此",
+    "form.resume.hint": "支持 PDF、DOC、JPG，最大10MB。请包含教育背景、项目经历、技能及相关经验",
+    "form.motivation": "个人陈述（选填但强烈建议填写）",
+    "form.submit": "提交我的申请 →",
+    "form.note": "🔒 您的信息经过加密安全存储。我们的招生委员会将逐一审阅每份申请，并在3-5个工作日内回复您。",
+    "success.title": "申请已成功提交！",
+    "success.desc": "感谢您报名2026 AI机器人夏季研学之旅！招生委员会将仔细审阅您的申请材料，并在3-5个工作日内回复。请查收邮箱中的确认邮件。准备好吧——这可能是一段改变人生的精彩旅程！",
+    "footer.tagline": "横跨太平洋——将美国最优秀的年轻头脑与中国最前沿的AI和机器人科技连接起来",
+    "footer.copy": "© 2026 MagiKid Education 版权所有 | AI机器人夏季研学之旅 2026 | 洛杉矶 ↔ 上海 ↔ 深圳 ↔ 珠海 ↔ 香港"
+  }
+};
+
+let currentLang = 'en';
+
+function setLang(lang) {
+  currentLang = lang;
+  document.getElementById('btn-en').classList.toggle('active', lang === 'en');
+  document.getElementById('btn-zh').classList.toggle('active', lang === 'zh');
+  document.documentElement.lang = lang === 'zh' ? 'zh-CN' : 'en';
+  const t = i18n[lang];
+  document.querySelectorAll('[data-i18n]').forEach(el => {
+    const key = el.getAttribute('data-i18n');
+    if (t[key] !== undefined) el.innerHTML = t[key];
+  });
+}
+
+// Floating shapes
+function createFloatingShapes() {
+  const c = document.getElementById('floatingShapes');
+  const colors = ['rgba(37,99,235,0.07)', 'rgba(124,58,237,0.06)', 'rgba(249,115,22,0.05)', 'rgba(34,197,94,0.05)', 'rgba(234,179,8,0.05)'];
+  for (let i = 0; i < 8; i++) {
+    const s = document.createElement('div');
+    s.className = 'shape';
+    const size = 80 + Math.random() * 250;
+    s.style.cssText = `left:${Math.random()*100}%;top:${Math.random()*100}%;width:${size}px;height:${size}px;background:${colors[i % colors.length]};animation-delay:${Math.random()*10}s;border-radius:${50 + Math.random()*30}%;`;
+    c.appendChild(s);
+  }
+}
+createFloatingShapes();
+
+const fEls = document.querySelectorAll('.fade-in');
+const obs = new IntersectionObserver(entries => {
+  entries.forEach((entry, i) => {
+    if (entry.isIntersecting) { setTimeout(() => entry.target.classList.add('visible'), i * 60); obs.unobserve(entry.target); }
+  });
+}, { threshold: 0.1 });
+fEls.forEach(el => obs.observe(el));
+
+function handleFileSelect(e) {
+  const f = e.target.files[0];
+  if (f) {
+    const d = document.getElementById('fileNameDisplay');
+    d.textContent = '✓ ' + f.name;
+    d.style.display = 'block';
+    document.getElementById('dropZone').style.borderColor = 'var(--accent)';
+  }
+}
+
+function handleResumeSelect(e) {
+  const f = e.target.files[0];
+  if (f) {
+    const d = document.getElementById('resumeFileNameDisplay');
+    d.textContent = '✓ ' + f.name;
+    d.style.display = 'block';
+    document.getElementById('resumeDropZone').style.borderColor = 'var(--accent)';
+  }
+}
+const dz = document.getElementById('dropZone');
+dz.addEventListener('dragover', e => { e.preventDefault(); dz.classList.add('drag-over'); });
+dz.addEventListener('dragleave', () => dz.classList.remove('drag-over'));
+dz.addEventListener('drop', e => {
+  e.preventDefault(); dz.classList.remove('drag-over');
+  const f = e.dataTransfer.files[0];
+  if (f) { document.getElementById('fileNameDisplay').textContent = '✓ ' + f.name; document.getElementById('fileNameDisplay').style.display = 'block'; dz.style.borderColor = 'var(--accent)'; }
+});
+
+const rdz = document.getElementById('resumeDropZone');
+rdz.addEventListener('dragover', e => { e.preventDefault(); rdz.classList.add('drag-over'); });
+rdz.addEventListener('dragleave', () => rdz.classList.remove('drag-over'));
+rdz.addEventListener('drop', e => {
+  e.preventDefault(); rdz.classList.remove('drag-over');
+  const f = e.dataTransfer.files[0];
+  if (f) { document.getElementById('resumeFileNameDisplay').textContent = '✓ ' + f.name; document.getElementById('resumeFileNameDisplay').style.display = 'block'; rdz.style.borderColor = 'var(--accent)'; }
+});
+
+function submitForm(e) {
+  e.preventDefault();
+  const btn = e.target.querySelector('.form-submit-btn');
+  btn.textContent = currentLang === 'zh' ? '提交中...' : 'Submitting...';
+  btn.disabled = true;
+  setTimeout(() => {
+    document.getElementById('form-area').style.display = 'none';
+    const sm = document.getElementById('success-msg');
+    sm.style.display = 'block';
+    setLang(currentLang);
+  }, 1500);
+}
+
+document.querySelectorAll('a[href^="#"]').forEach(a => {
+  a.addEventListener('click', function(e) {
+    e.preventDefault();
+    const target = document.querySelector(this.getAttribute('href'));
+    if (target) target.scrollIntoView({ behavior: 'smooth', block: 'start' });
+  });
+});
+</script>
+
+</body>
+</html>
