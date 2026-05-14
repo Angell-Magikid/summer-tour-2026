@@ -808,8 +808,13 @@
   </div>
   <div class="register-container">
     <div class="register-form fade-in">
+      <!-- 隐藏 iframe：接收表单提交结果，无刷新 -->
+      <iframe name="form-target-iframe" id="form-target-iframe"
+        style="display:none;"></iframe>
+
       <div id="form-area">
-        <form id="application-form" onsubmit="submitForm(event)">
+        <form id="application-form" onsubmit="submitForm(event)"
+              enctype="multipart/form-data">
           <div class="form-grid">
             <div class="form-group">
               <label data-i18n="form.firstname">First Name <span class="required">*</span></label>
@@ -1300,18 +1305,54 @@ rdz.addEventListener('drop', e => {
   if (f) { document.getElementById('resumeFileNameDisplay').textContent = '✓ ' + f.name; document.getElementById('resumeFileNameDisplay').style.display = 'block'; rdz.style.borderColor = 'var(--accent)'; }
 });
 
+// =============================================
+// Google Apps Script Endpoint
+// 👇 部署完 Apps Script 后，把 URL 粘贴到这里
+// =============================================
+const APPS_SCRIPT_URL = 'https://script.google.com/macros/s/YOUR_SCRIPT_ID/exec';
+
+/**
+ * 使用隐藏 iframe 提交表单，绕过 CORS 限制
+ * 提交后 Apps Script 返回 HTML，通过 postMessage 通知父页面结果
+ */
 function submitForm(e) {
   e.preventDefault();
   const btn = e.target.querySelector('.form-submit-btn');
-  btn.textContent = currentLang === 'zh' ? '提交中...' : 'Submitting...';
+  const isZh = currentLang === 'zh';
+  btn.textContent = isZh ? '提交中...' : 'Submitting...';
   btn.disabled = true;
-  setTimeout(() => {
-    document.getElementById('form-area').style.display = 'none';
-    const sm = document.getElementById('success-msg');
-    sm.style.display = 'block';
-    setLang(currentLang);
-  }, 1500);
+
+  // 构建 URL 参数（不含文件，文件通过 multipart/form-data 由 iframe 处理）
+  // 改用标准 form submit → iframe 方式
+  const form = document.getElementById('application-form');
+  form.action = APPS_SCRIPT_URL;
+  form.method = 'POST';
+  form.target = 'form-target-iframe';
+
+  // 监听 iframe 返回的结果（Apps Script 会 postMessage）
+  const handler = (ev) => {
+    window.removeEventListener('message', handler);
+    btn.disabled = false;
+    btn.innerHTML = `<span data-i18n="form.submit">${isZh ? '提交我的申请 →' : 'Submit My Application →'}</span>`;
+
+    if (ev.data === 'FORM_SUBMIT_SUCCESS') {
+      document.getElementById('form-area').style.display = 'none';
+      document.getElementById('success-msg').style.display = 'block';
+      setLang(currentLang);
+    } else {
+      alert(isZh ? '提交失败，请稍后重试或联系我们。' : 'Submission failed. Please try again or contact us.');
+    }
+  };
+  window.addEventListener('message', handler);
+
+  // 提交！
+  form.submit();
 }
+
+// 页面加载时，配置 iframe 接收消息的来源（安全校验）
+// Apps Script 部署后把 URL 域名填入这里（无需 https://）
+// 格式：script.google.com
+const ALLOWED_ORIGIN = 'https://script.google.com';
 
 document.querySelectorAll('a[href^="#"]').forEach(a => {
   a.addEventListener('click', function(e) {
