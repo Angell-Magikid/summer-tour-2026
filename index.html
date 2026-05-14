@@ -343,6 +343,26 @@
     .tag-drone { background: rgba(16,185,129,0.08); color: #059669; border: 1px solid rgba(16,185,129,0.15); }
     .tag-hardware { background: rgba(234,179,8,0.08); color: #ca8a04; border: 1px solid rgba(234,179,8,0.15); }
     .tag-culture { background: rgba(249,115,22,0.08); color: var(--accent3); border: 1px solid rgba(249,115,22,0.15); }
+    .tag-intern { background: rgba(6,182,212,0.08); color: #0891b2; border: 1px solid rgba(6,182,212,0.15); }
+
+    /* Highlight Featured Cards */
+    .highlight-card {
+      border-color: rgba(234,179,8,0.4) !important;
+      background: linear-gradient(135deg, #fffbeb, #fff, #f0f9ff) !important;
+      box-shadow: 0 4px 24px rgba(234,179,8,0.12) !important;
+    }
+    .highlight-card:hover {
+      transform: translateY(-8px) scale(1.02) !important;
+      border-color: rgba(234,179,8,0.5) !important;
+      box-shadow: 0 12px 40px rgba(234,179,8,0.20) !important;
+    }
+    .highlight-badge {
+      position: absolute; top: 14px; right: 16px;
+      background: linear-gradient(135deg, #eab308, #f59e0b);
+      color: white; font-size: 0.65rem; font-weight: 700;
+      padding: 3px 10px; border-radius: 12px; letter-spacing: 0.3px;
+      text-transform: uppercase; z-index: 2;
+    }
 
     footer {
       background: var(--primary-light); border-top: 1px solid var(--card-border);
@@ -526,7 +546,7 @@
 <!-- ===== COMPANIES ===== -->
 <section id="companies">
   <div class="section-header fade-in">
-    <div class="section-tag" data-i18n="sec.comp.tag">Exclusive Visits</div>
+    <div class="section-tag" data-i18n="sec.comp.tag">Future Tech Unicorns · By Invitation</div>
     <h2 class="section-title" data-i18n="sec.comp.title">The Companies <span class="accent">Shaping Tomorrow</span></h2>
     <div class="divider"></div>
     <p class="section-desc" data-i18n="sec.comp.desc">These aren't museum tours. You'll walk into active R&D facilities, meet the people building the future, and get hands-on with technology most Americans only read about online.</p>
@@ -562,11 +582,19 @@
       <p data-i18n="comp.longteng">China's leading PCB manufacturer and comprehensive AI hardware supplier specializing in optical modules, circuit boards, and electronic components that power robotics, telecommunications, and AI computing infrastructure worldwide.</p>
       <span class="company-tag tag-ai">PCB & Optical Module Leader</span>
     </div>
-    <div class="company-card fade-in">
+    <div class="company-card highlight-card fade-in">
+      <div class="highlight-badge">⭐ Featured</div>
       <span class="company-logo">🏗️</span>
       <h4>XbotPark 松山湖机器人基地</h4>
       <p data-i18n="comp.xbotpark">Founded by Prof. Zexiang Li (李泽湘) — China's top robotics incubator. 60+ startup teams, shared smart factories, "5-minute ecosystem" from idea to product. Home to cloud whale (云鲸), E-Move (逸动), and next-gen hardware innovators.</p>
       <span class="company-tag tag-robot">Robotics Incubator</span>
+    </div>
+    <div class="company-card highlight-card fade-in">
+      <div class="highlight-badge">⭐ Featured</div>
+      <span class="company-logo">🎓</span>
+      <h4>Shenzhen Innovation Academy 深圳创新学院</h4>
+      <p data-i18n="comp.szinnovation">A world-class innovation hub bridging top global universities with China's tech ecosystem. Cutting-edge research in AI, robotics, and smart systems — where the next generation of tech leaders is being shaped through hands-on projects and industry mentorship.</p>
+      <span class="company-tag tag-intern" data-i18n="tag.innovation">Innovation Hub & Education</span>
     </div>
   </div>
 </section>
@@ -627,7 +655,8 @@
           <li data-i18n="day3.a">Shanghai Tower — ascend the world's 2nd tallest building (632m / 2073ft)</li>
           <li data-i18n="day3.b">World's Fastest Elevator — 18 m/s (40 mph!) ride to floor 118 observation deck</li>
           <li data-i18n="day3.c">Duoyun Bookstore (朵云书院) + China Art Museum (中华艺术宫) — culture and art immersion</li>
-          <li data-i18n="day3.d">VR Interactive Experience Hall + Huangpu River evening cruise</li>
+          <li data-i18n="day3.d"><strong>AI Dream (AI之梦) — Large-Scale Immersive AI Interactive Experience</strong>: A groundbreaking theatrical production where you step inside a future world shaped by artificial intelligence. Walk through interactive scenes, engage with AI characters, and explore how technology will transform human life in the decades to come.</li>
+          <li data-i18n="day3.e">VR Interactive Experience Hall + Huangpu River evening cruise</li>
         </ul>
         <div class="day-images img-count-3">
           <img src="images/Day3-1.png" alt="Shanghai Tower" class="day-photo"><img src="images/Day3-2.png" alt="Duoyun Bookstore" class="day-photo"><img src="images/Day3-3.png" alt="Huangpu River Cruise" class="day-photo">
@@ -940,7 +969,7 @@ const i18n = {
     "dest.sz": "\"Silicon Valley of Hardware\" · DJI global HQ · Engine AI humanoid lab · XbotPark robotics incubator · Huaqiangbei market · Startup ecosystem",
     "dest.zh": "Coastal innovation hub · Long Teng Electric (PCB/AI hardware leader) · Yu Hot Springs · Cantonese cuisine · Internship opportunities",
     "dest.hk": "International departure gateway · Shenzhen Bay Port · Hong Kong Int'l Airport",
-    "sec.comp.tag": "Exclusive Visits",
+    "sec.comp.tag": "Future Tech Unicorns · By Invitation",
     "sec.comp.title": "The Companies <span class='accent'>Shaping Tomorrow</span>",
     "sec.comp.desc": "These aren't museum tours. You'll walk into active R&D facilities, meet the people building the future, and get hands-on with technology most Americans only read about online.",
     "comp.fourier": "Shanghai-based pioneer of rehabilitation robotics and the GR-1 humanoid robot — one of the world's first mass-produced general-purpose humanoid robots capable of walking, carrying objects, and performing complex tasks. See it live in action.",
@@ -950,6 +979,8 @@ const i18n = {
     "comp.longteng": "China's leading PCB manufacturer and comprehensive AI hardware supplier, specializing in optical modules, printed circuit boards, and electronic components that power robotics, telecommunications infrastructure, and AI computing systems worldwide.",
     "comp.xbotpark": "Founded by Prof. Zexiang Li (李泽湘) — China's top robotics incubator. 60+ startup teams, shared smart factories, \"5-minute ecosystem\" from idea to product. Home to cloud whale (云鲸), E-Move (逸动), and next-gen hardware innovators.",
     "tag.incubator": "Robotics Incubator",
+    "comp.szinnovation": "A world-class innovation hub bridging top global universities with China's tech ecosystem. Cutting-edge research in AI, robotics, and smart systems — where the next generation of tech leaders is shaped through hands-on projects and industry mentorship.",
+    "tag.innovation": "Innovation Hub & Education",
     "tag.humanoid": "Humanoid Robot Pioneer",
     "tag.drone": "Global Drone Leader",
     "tag.hardware": "Hardware Ecosystem",
@@ -974,7 +1005,8 @@ const i18n = {
     "day3.a": "Shanghai Tower — ascend the world's 2nd tallest building (632m / 2073ft)",
     "day3.b": "World's Fastest Elevator — 18 m/s (40 mph!) to floor 118 observation deck",
     "day3.c": "Duoyun Bookstore (朵云书院) + China Art Museum (中华艺术宫)",
-    "day3.d": "VR Interactive Experience Hall + Huangpu River evening cruise",
+    "day3.d": "AI Dream (AI之梦) — Large-Scale Immersive AI Interactive Experience: Step inside a future world shaped by AI, walk through interactive scenes, engage with AI characters",
+    "day3.e": "VR Interactive Experience Hall + Huangpu River evening cruise",
     // Day 4
     "day4.title": "Speed Into China's Silicon Valley — Shenzhen & XbotPark",
     "day4.a": "Fuxing high-speed train — 350 km/h (217 mph), ~8 hours to Shenzhen",
@@ -1088,7 +1120,7 @@ const i18n = {
     "dest.sz": "\"硬件硅谷\" · 大疆全球总部 · 众擎人形机器人实验室 · XbotPark松山湖机器人基地 · 华强北市场 · 创新创业生态圈",
     "dest.zh": "滨海创新枢纽 · 龙腾电子（PCB/AI硬件领军）· 御温泉 · 粤菜美食 · 实习机会",
     "dest.hk": "国际出发门户 · 深圳湾口岸 · 香港国际机场",
-    "sec.comp.tag": "独家参访",
+    "sec.comp.tag": "定参访制 · 未来科技独角兽",
     "sec.comp.title": "塑造未来的<span class='accent'>科技巨头</span>",
     "sec.comp.desc": "这些不是博物馆参观。你将走进正在运转的研发中心，与建造未来的工程师面对面交流，亲自动手操作大多数美国人只能在网上读到的前沿技术。",
     "comp.fourier": "总部位于上海的康复机器人和GR-1人形机器人先驱——全球首批量产通用型人形机器人之一，能够行走、搬运物品、执行复杂任务。现场见证它的真实表现。",
@@ -1098,6 +1130,8 @@ const i18n = {
     "comp.longteng": "中国头部PCB制造商及综合性AI硬件供应商，专注于光模块、印制电路板和电子元器件，产品广泛应用于机器人、通信基础设施和AI计算系统等领域。",
     "comp.xbotpark": "李泽湘教授创立——中国顶级机器人孵化器。60+创业团队、共享智能工厂、\"五分钟生态圈\"从创意到产品。孵化出云鲸智能、逸动科技等龙头企业。",
     "tag.incubator": "机器人孵化器",
+    "comp.szinnovation": "连接全球顶尖高校与中国科技生态的世界级创新枢纽。在AI、机器人、智能系统领域开展前沿研究，通过实战项目与产业导师培养下一代科技领袖。",
+    "tag.innovation": "创新枢纽 · 教育",
     "tag.drone": "全球无人机领导者",
     "tag.hardware": "硬件生态系统",
     "tag.intern": "实习合作伙伴",
@@ -1121,7 +1155,8 @@ const i18n = {
     "day3.a": "登上上海中心大厦 —— 全球第二高楼（632米）",
     "day3.b": "世界最快电梯 —— 以18米/秒冲上118层观光厅！",
     "day3.c": "朵云书院（云端书店）+ 中华艺术宫 —— 文化艺术沉浸体验",
-    "day3.d": "VR互动体验馆 + 黄浦江夜间游船",
+    "day3.d": "AI之梦 —— 大型情景式AI互动体验：走进由人工智能塑造的未来世界，穿越互动场景，与AI角色深度交流，探索科技如何改变人类生活",
+    "day3.e": "VR互动体验馆 + 黄浦江夜间游船",
     // Day 4
     "day4.title": "极速驶入中国硅谷——深圳 & XbotPark机器人基地",
     "day4.a": "复兴号高速列车 —— 350公里/小时飞驰抵达深圳",
